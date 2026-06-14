@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>715  — مولّد عناوين Gmail</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@1,8..60,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: 'Cairo', sans-serif; background: #000; color: white; }
+    button, input { font-family: 'Cairo', sans-serif; }
+
+    /* ── Liquid Glass Light ──────────────────────── */
+    .lg {
+      background: rgba(255,255,255,0.01);
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      border: none;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.10);
+      position: relative; overflow: hidden;
+    }
+    .lg::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.4px;
+      background: linear-gradient(180deg,
+        rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
+        transparent 40%, transparent 60%,
+        rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+              mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+    }
+
+    /* ── Liquid Glass Strong ─────────────────────── */
+    .lgs {
+      background: rgba(255,255,255,0.01);
+      backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px);
+      border: none;
+      box-shadow: 4px 4px 4px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.15);
+      position: relative; overflow: hidden;
+    }
+    .lgs::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.4px;
+      background: linear-gradient(180deg,
+        rgba(255,255,255,0.50) 0%, rgba(255,255,255,0.20) 20%,
+        transparent 40%, transparent 60%,
+        rgba(255,255,255,0.20) 80%, rgba(255,255,255,0.50) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+              mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+    }
+
+    /* ── Animations ──────────────────────────────── */
+    @keyframes fadein { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes blink  { 0%,100%{opacity:1} 50%{opacity:0.15} }
+
+    .fadein { animation: fadein 0.22s ease both; }
+    .blink  { animation: blink 2s ease-in-out infinite; }
+
+    /* ── Input ───────────────────────────────────── */
+    .field {
+      background: rgba(255,255,255,0.05);
+      color: white; border: none; outline: none;
+      transition: box-shadow 0.18s;
+    }
+    .field::placeholder { color: rgba(255,255,255,0.22); }
+    .field:focus { box-shadow: 0 0 0 2px rgba(255,255,255,0.18); }
+
+    /* ── Tab ─────────────────────────────────────── */
+    .tab {
+      color: rgba(255,255,255,0.35); cursor: pointer;
+      transition: all 0.15s;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 7px;
+      font-size: 13px; font-weight: 600;
+      background: none; border-left:none; border-right:none; border-top:none;
+    }
+    .tab.on { color: white; border-bottom-color: rgba(255,255,255,0.65); }
+
+    /* ── Chip ────────────────────────────────────── */
+    .chip {
+      border-radius: 9999px; padding: 0.35rem 1rem; font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.45); cursor: pointer; transition: all 0.14s;
+      background: none; border: none;
+    }
+    .chip.on, .chip:hover { color: white; }
+
+    /* ── Result row ──────────────────────────────── */
+    .rrow {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 11px 14px; border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+      transition: background 0.12s;
+    }
+    .rrow:hover { background: rgba(255,255,255,0.065); }
+
+    /* ── Copy btn ────────────────────────────────── */
+    .cbtn {
+      border-radius: 7px; padding: 5px 12px; font-size: 11px; font-weight: 600;
+      color: rgba(255,255,255,0.45); cursor: pointer; background: rgba(255,255,255,0.06);
+      border: none; transition: all 0.13s; white-space: nowrap; flex-shrink: 0;
+    }
+    .cbtn:hover { background: rgba(255,255,255,0.12); color: white; }
+    .cbtn.ok    { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
+
+    /* ── Hover scale ─────────────────────────────── */
+    .hs { transition: transform 0.14s; }
+    .hs:hover  { transform: scale(1.04); }
+    .hs:active { transform: scale(0.95); }
+
+    /* ── Scrollbar ───────────────────────────────── */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+    /* ── Steps ───────────────────────────────────── */
+    .step-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.45);
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── خلفية الفيديو ──────────────────────────────── -->
+<video autoplay loop muted playsinline
+  style="position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;">
+  <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260315_073750_51473149-4350-4920-ae24-c8214286f323.mp4" type="video/mp4">
+</video>
+
+<!-- ─── الصفحة ───────────────────────────────────────── -->
+<div style="position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 16px 48px;">
+
+  <!-- شريط التنقل -->
+  <nav style="width:100%;max-width:640px;display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;">
+    <div style="display:flex;align-items:center;gap:9px;">
+      <div class="lg" style="width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </div>
+      <span style="font-weight:800;font-size:1.1rem;letter-spacing:-0.01em;">715 </span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span class="blink" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.45);"></span>
+      <span style="font-size:11px;color:rgba(255,255,255,0.28);">عناوين Gmail الرسمية</span>
+    </div>
+  </nav>
+
+  <!-- البطاقة الرئيسية -->
+  <div class="lgs" style="width:100%;max-width:640px;border-radius:24px;padding:28px 28px 24px;">
+
+    <!-- العنوان -->
+    <div style="text-align:center;margin-bottom:24px;">
+      <h1 style="font-weight:800;font-size:1.65rem;letter-spacing:-0.01em;color:white;line-height:1.25;margin-bottom:8px;">
+        مولّد عناوين Gmail البديلة
+      </h1>
+      <p style="font-size:13px;color:rgba(255,255,255,0.38);line-height:1.75;max-width:420px;margin:0 auto;">
+        أنشئ عناوين <span style="color:rgba(255,255,255,0.68);font-weight:600;font-family:'Courier New',monospace;">@gmail.com</span> حقيقية وغير محدودة — كل عنوان يُحوّل رسائله مباشرةً إلى صندوقك
+      </p>
+    </div>
+
+    <!-- حقل الإدخال -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.28);margin-bottom:8px;">اسم المستخدم في Gmail</div>
+      <div class="lg" style="border-radius:13px;display:flex;overflow:hidden;flex-direction:row-reverse;">
+        <input id="inp" type="text" placeholder="مثال: mohmedali"
+          class="field"
+          autocomplete="off" spellcheck="false" dir="ltr"
+          style="flex:1;padding:13px 16px;font-size:14px;font-weight:600;border-radius:0;min-width:0;text-align:left;"
+          oninput="onInput()" onkeydown="if(event.key==='Enter')generate()" />
+        <div style="display:flex;align-items:center;padding:0 14px;background:rgba(255,255,255,0.06);border-right:1px solid rgba(255,255,255,0.08);flex-shrink:0;">
+          <span style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);font-family:'Courier New',monospace;">@gmail.com</span>
+        </div>
+      </div>
+      <div id="inp-err" style="display:none;font-size:12px;color:rgba(255,120,120,0.75);margin-top:6px;padding:0 4px;"></div>
+    </div>
+
+    <!-- التبويبات -->
+    <div style="display:flex;gap:22px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:18px;">
+      <button id="tab-plus" class="tab on" onclick="switchTab('plus')">✦ عناوين ذكية (+)</button>
+      <button id="tab-dot"  class="tab"    onclick="switchTab('dot')">⬤ تنويعات النقطة (.)</button>
+    </div>
+
+    <!-- وضع العناوين الذكية -->
+    <div id="mode-plus">
+      <!-- الاختيارات السريعة -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.28);margin-bottom:10px;">اختيارات سريعة</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;" id="chips"></div>
+      </div>
+      <!-- وسم مخصص -->
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.28);margin-bottom:8px;">وسم مخصص</div>
+        <input id="tag-inp" type="text" placeholder="مثال: عمل2025، تطبيقي، عروض…"
+          class="field lg"
+          autocomplete="off" spellcheck="false"
+          style="width:100%;border-radius:10px;padding:11px 14px;font-size:13px;"
+          oninput="onTagInput()" onkeydown="if(event.key==='Enter')generate()" />
+      </div>
+    </div>
+
+    <!-- وضع النقطة -->
+    <div id="mode-dot" style="display:none;">
+      <div class="lg" style="border-radius:12px;padding:14px 16px;font-size:13px;color:rgba(255,255,255,0.45);line-height:1.85;">
+        Gmail يتجاهل النقاط في أسماء المستخدمين تماماً — أي أن
+        <span dir="ltr" style="color:rgba(255,255,255,0.72);font-family:'Courier New',monospace;">a.hmed@gmail.com</span>
+        و
+        <span dir="ltr" style="color:rgba(255,255,255,0.72);font-family:'Courier New',monospace;">ahmed@gmail.com</span>
+        نفس الصندوق بالضبط. كل هذه العناوين حقيقية وتعمل بالكامل.
+        <span id="dot-count" style="display:block;margin-top:6px;color:rgba(255,255,255,0.5);font-weight:600;font-size:12px;"></span>
+      </div>
+    </div>
+
+    <!-- زر التوليد -->
+    <button id="gen-btn" onclick="generate()" class="lgs hs"
+      style="width:100%;margin-top:18px;border-radius:13px;padding:14px;font-size:14px;font-weight:700;color:white;border:none;cursor:pointer;background:none;letter-spacing:0.02em;">
+      توليد عناوين Gmail ←
+    </button>
+
+    <!-- النتائج -->
+    <div id="results" style="display:none;margin-top:22px;">
+
+      <!-- رأس النتائج -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <span id="res-label" style="font-size:11px;color:rgba(255,255,255,0.32);font-weight:600;text-transform:uppercase;letter-spacing:0.1em;"></span>
+        <button onclick="copyAll()" class="lg hs"
+          style="border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.45);border:none;cursor:pointer;background:none;transition:color 0.12s;"
+          onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">
+          نسخ الكل
+        </button>
+      </div>
+
+      <!-- قائمة العناوين -->
+      <div id="res-list" style="display:flex;flex-direction:column;gap:6px;max-height:320px;overflow-y:auto;padding-left:2px;"></div>
+
+      <!-- ملاحظة التقليص -->
+      <div id="dot-note" style="display:none;text-align:center;font-size:11px;color:rgba(255,255,255,0.2);margin-top:10px;"></div>
+
+      <!-- كيفية الاستخدام -->
+      <div class="lg" style="border-radius:14px;padding:16px;margin-top:18px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.28);margin-bottom:12px;">كيفية الاستخدام</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div class="step-num">١</div>
+            <div style="font-size:12.5px;color:rgba(255,255,255,0.48);line-height:1.65;">أعطِ العنوان البديل لأي موقع أو خدمة أو تطبيق</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div class="step-num">٢</div>
+            <div style="font-size:12.5px;color:rgba(255,255,255,0.48);line-height:1.65;">ستصل الرسائل تلقائياً إلى صندوق Gmail الأصلي</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div class="step-num">٣</div>
+            <div style="font-size:12.5px;color:rgba(255,255,255,0.48);line-height:1.65;">
+              في Gmail → الإعدادات → الفلاتر ← انسخ زر <span dir="ltr" style="color:rgba(255,255,255,0.65);font-family:'Courier New',monospace;font-size:11px;">الفلتر</span> لفرز الرسائل أو أرشفتها تلقائياً
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- تذييل الصفحة -->
+  <div style="margin-top:20px;font-size:11.5px;color:rgba(255,255,255,0.16);text-align:center;line-height:1.85;">
+    جميع العناوين ميزة رسمية من Google · لا تسجيل · لا خوادم خارجية<br>
+    الرسائل تصل مباشرةً إلى صندوق Gmail الحقيقي
+  </div>
+
+</div>
+
+<!-- ─── إشعار النسخ ────────────────────────────────── -->
+<div id="toast" style="position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%);z-index:70;pointer-events:none;opacity:0;transition:opacity 0.22s ease;">
+  <div class="lgs" style="border-radius:9999px;padding:0.6rem 1.5rem;white-space:nowrap;">
+    <span id="toast-txt" style="font-size:13px;color:white;font-weight:600;"></span>
+  </div>
+</div>
+
+<script>
+/* ── الحالة ──────────────────────────────────────── */
+let mode        = 'plus';
+let activePreset = null;
+let allResults   = [];
+
+const PRESETS = [
+  { label: '📬 نشرات',    tag: 'newsletter' },
+  { label: '🛒 تسوق',     tag: 'shopping'   },
+  { label: '👥 تواصل',    tag: 'social'      },
+  { label: '💼 عمل',      tag: 'work'        },
+  { label: '🔬 تجربة',    tag: 'trial'       },
+  { label: '💰 مالية',    tag: 'finance'     },
+  { label: '🎮 ألعاب',    tag: 'gaming'      },
+  { label: '📦 توصيل',    tag: 'delivery'    },
+];
+
+const $ = id => document.getElementById(id);
+let toastTm;
+
+/* ── إشعار ────────────────────────────────────────── */
+function toast(msg) {
+  $('toast-txt').textContent = msg;
+  $('toast').style.opacity = '1';
+  clearTimeout(toastTm);
+  toastTm = setTimeout(() => { $('toast').style.opacity = '0'; }, 2800);
+}
+
+/* ── بناء الاختيارات السريعة ─────────────────────── */
+(function buildChips() {
+  const wrap = $('chips');
+  PRESETS.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'chip lg';
+    btn.dataset.tag = p.tag;
+    btn.textContent = p.label;
+    btn.onclick = () => togglePreset(p.tag, btn);
+    wrap.appendChild(btn);
+  });
+})();
+
+function togglePreset(tag, btn) {
+  if (activePreset === tag) {
+    activePreset = null;
+    btn.classList.remove('on');
+  } else {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+    activePreset = tag;
+    btn.classList.add('on');
+    $('tag-inp').value = '';
+  }
+  clearResults();
+}
+
+/* ── تبديل التبويب ───────────────────────────────── */
+function switchTab(t) {
+  mode = t;
+  $('tab-plus').classList.toggle('on', t === 'plus');
+  $('tab-dot').classList.toggle('on',  t === 'dot');
+  $('mode-plus').style.display = t === 'plus' ? 'block' : 'none';
+  $('mode-dot').style.display  = t === 'dot'  ? 'block' : 'none';
+  clearResults();
+  updateDotCount();
+}
+
+/* ── عدّادات ──────────────────────────────────────── */
+function onInput()    { clearResults(); showError(''); updateDotCount(); }
+function onTagInput() { activePreset = null; document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); clearResults(); }
+
+function updateDotCount() {
+  const u = getUsername();
+  if (!u || u.length < 2) { $('dot-count').textContent = ''; return; }
+  const total = Math.pow(2, u.length - 1) - 1;
+  const shown = Math.min(total, 50);
+  $('dot-count').textContent = `سيتم توليد ${total > 50 ? '٥٠+ من ' + total.toLocaleString('ar') : shown} تنويعاً`;
+}
+
+/* ── اسم المستخدم ────────────────────────────────── */
+function getUsername() {
+  return $('inp').value.trim().toLowerCase()
+    .replace(/@gmail\.com$/i, '').replace(/\s+/g, '');
+}
+
+/* ── التحقق من الصحة ─────────────────────────────── */
+function validateUsername(u) {
+  if (!u)          return 'أدخل اسم المستخدم في Gmail';
+  if (u.length < 2) return 'يجب أن يتكون الاسم من حرفين على الأقل';
+  if (u.length > 30) return 'اسم المستخدم في Gmail لا يتجاوز ٣٠ حرفاً';
+  if (!/^[a-z0-9]+([.][a-z0-9]+)*$/.test(u))
+    return 'استخدم الحروف الإنجليزية والأرقام والنقاط فقط (بدون نقاط متتالية أو في البداية/النهاية)';
+  return '';
+}
+
+function showError(msg) {
+  const el = $('inp-err');
+  if (msg) { el.textContent = '⚠ ' + msg; el.style.display = 'block'; }
+  else      { el.style.display = 'none'; }
+}
+
+/* ── خوارزمية تنويعات النقطة ──────────────────────── */
+function dotVariations(username) {
+  const chars = username.split('');
+  const n = chars.length - 1;
+  const out = [];
+  const limit = Math.pow(2, n);
+  for (let i = 1; i < limit && out.length < 50; i++) {
+    let r = chars[0];
+    for (let j = 0; j < n; j++) {
+      if (i & (1 << j)) r += '.';
+      r += chars[j + 1];
+    }
+    out.push(r + '@gmail.com');
+  }
+  return out;
+}
+
+/* ── التوليد ─────────────────────────────────────── */
+function generate() {
+  const u = getUsername();
+  const err = validateUsername(u);
+  if (err) { showError(err); return; }
+  showError('');
+
+  let list = [];
+
+  if (mode === 'plus') {
+    const tags = [];
+    if (activePreset) {
+      tags.push(activePreset);
+    } else {
+      const custom = $('tag-inp').value.trim();
+      if (custom) {
+        custom.split(/[\s,،;]+/).forEach(t => {
+          const clean = t.toLowerCase().replace(/[^a-z0-9._-]/g, '').slice(0, 64);
+          if (clean) tags.push(clean);
+        });
+      }
+    }
+    if (!tags.length) {
+      PRESETS.forEach(p => list.push(u + '+' + p.tag + '@gmail.com'));
+    } else {
+      tags.forEach(t => list.push(u + '+' + t + '@gmail.com'));
+    }
+  } else {
+    if (u.length < 2) { showError('يجب أن يتكون الاسم من حرفين على الأقل لتنويعات النقطة'); return; }
+    list = dotVariations(u);
+  }
+
+  allResults = list;
+  renderResults(list, u);
+}
+
+/* ── عرض النتائج ─────────────────────────────────── */
+function renderResults(list, u) {
+  const container = $('res-list');
+  container.innerHTML = '';
+
+  const total = mode === 'dot' ? Math.pow(2, u.length - 1) - 1 : list.length;
+
+  $('res-label').textContent = list.length + ' عنوان تم توليده';
+  $('results').style.display = 'block';
+
+  list.forEach((email, i) => {
+    const row = document.createElement('div');
+    row.className = 'rrow fadein';
+    row.style.animationDelay = Math.min(i * 0.03, 0.4) + 's';
+    row.innerHTML = `
+      <div style="display:flex;gap:6px;flex-shrink:0;">
+        <button class="cbtn" onclick="copyOne(this,'${email}')">نسخ</button>
+        <button class="cbtn" onclick="copyOne(this,'to:(${email})')">فلتر</button>
+      </div>
+      <span dir="ltr" style="font-family:'Courier New',monospace;font-size:12.5px;color:rgba(255,255,255,0.82);word-break:break-all;flex:1;text-align:left;">${email}</span>
+    `;
+    container.appendChild(row);
+  });
+
+  const note = $('dot-note');
+  if (mode === 'dot' && total > 50) {
+    note.textContent = `عرض ٥٠ تنويعاً من أصل ${total.toLocaleString('ar')} تنويع ممكن`;
+    note.style.display = 'block';
+  } else {
+    note.style.display = 'none';
+  }
+}
+
+function clearResults() {
+  allResults = [];
+  $('results').style.display = 'none';
+  $('res-list').innerHTML = '';
+}
+
+/* ── النسخ ───────────────────────────────────────── */
+function copyOne(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const was = btn.textContent;
+    btn.textContent = '✓';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = was; btn.classList.remove('ok'); }, 1800);
+  }).catch(() => toast('تعذّر النسخ — حدّث المتصفح'));
+}
+
+function copyAll() {
+  if (!allResults.length) return;
+  navigator.clipboard.writeText(allResults.join('\n')).then(() => {
+    toast('تم نسخ جميع العناوين ✓');
+  });
+}
+</script>
+</body>
+</html>
