@@ -3,94 +3,170 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>715 ميل — مولّد عناوين Gmail</title>
-<meta name="description" content="أنشئ عناوين Gmail بديلة حقيقية وغير محدودة"/>
+<title>715 ميل — مولّد عناوين Gmail الاحترافي</title>
+<meta name="description" content="أنشئ عناوين Gmail بديلة حقيقية وغير محدودة — مفضلات، تصدير، رمز QR، فلاتر Gmail"/>
 <meta name="theme-color" content="#050510"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-:root{--acc:#7ba4ff;--acc2:#a78bfa;--glow:rgba(123,164,255,.18);--glass:rgba(255,255,255,.04);--border:rgba(255,255,255,.10)}
+:root{--acc:#7ba4ff;--acc2:#a78bfa;--grn:#4ade80;--ylw:#fbbf24;--glow:rgba(123,164,255,.18);--g:rgba(255,255,255,.04)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{min-height:100vh;font-family:'Cairo',sans-serif;background:#050510;color:#fff;overflow-x:hidden}
-button,input{font-family:'Cairo',sans-serif}
+button,input,textarea{font-family:'Cairo',sans-serif}
 
+/* Backgrounds */
 @keyframes aurora{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .aurora{position:fixed;inset:0;z-index:0;background:linear-gradient(-45deg,#050510,#12052a,#051522,#020d0a);background-size:400% 400%;animation:aurora 18s ease infinite}
-.vbg{position:fixed;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;opacity:.4}
-.ovl{position:fixed;inset:0;z-index:2;background:linear-gradient(to bottom,rgba(5,5,16,.35) 0%,rgba(5,5,16,.05) 50%,rgba(5,5,16,.5) 100%)}
-.wrap{position:relative;z-index:10;min-height:100vh;padding:0 16px 80px}
+.vbg{position:fixed;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;opacity:.35}
+.ovl{position:fixed;inset:0;z-index:2;background:linear-gradient(to bottom,rgba(5,5,16,.4) 0%,rgba(5,5,16,.05) 50%,rgba(5,5,16,.55) 100%)}
+#ptc{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.6}
+#cfc{position:fixed;inset:0;z-index:99;pointer-events:none;display:none}
+.wrap{position:relative;z-index:10;min-height:100vh;padding:0 16px 90px}
 
-.lg{background:var(--glass);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);position:relative;overflow:hidden}
+/* Glass */
+.lg{background:var(--g);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);position:relative;overflow:hidden}
 .lg::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.35) 0%,rgba(255,255,255,.08) 45%,transparent 55%,rgba(255,255,255,.12) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
-.lgs{background:rgba(8,8,24,.65);backdrop-filter:blur(48px) saturate(160%);-webkit-backdrop-filter:blur(48px) saturate(160%);position:relative;overflow:hidden}
-.lgs::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.3) 0%,rgba(255,255,255,.06) 45%,transparent 55%,rgba(255,255,255,.14) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.lgs{background:rgba(8,8,24,.68);backdrop-filter:blur(48px) saturate(160%);-webkit-backdrop-filter:blur(48px) saturate(160%);position:relative;overflow:hidden}
+.lgs::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,.06) 45%,transparent 55%,rgba(255,255,255,.14) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 
+/* Animations */
 @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideup{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.75)}}
-@keyframes glow-pulse{0%,100%{box-shadow:0 0 20px var(--glow)}50%{box-shadow:0 0 40px var(--glow),0 0 80px rgba(123,164,255,.07)}}
-@keyframes shimmer{to{background-position:-200% center}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.7)}}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 18px var(--glow)}50%{box-shadow:0 0 38px var(--glow),0 0 70px rgba(123,164,255,.08)}}
+@keyframes star-pop{0%{transform:scale(1)}40%{transform:scale(1.6)}70%{transform:scale(.85)}100%{transform:scale(1)}}
+@keyframes badge-in{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+@keyframes ripple{to{transform:scale(4);opacity:0}}
+@keyframes progress{from{width:0}to{width:100%}}
 
 .fadein{animation:fadein .2s ease both}
 .slideup{animation:slideup .28s ease both}
 .spin-a{animation:spin .7s linear infinite}
 .pulse-a{animation:pulse 2s ease-in-out infinite}
+.star-pop{animation:star-pop .35s ease}
 
+/* Field */
 .field{background:rgba(255,255,255,.055);color:#fff;outline:none;border:none;transition:background .15s,box-shadow .15s}
 .field::placeholder{color:rgba(255,255,255,.2)}
 .field:focus{background:rgba(255,255,255,.09);box-shadow:0 0 0 2px rgba(123,164,255,.3),inset 0 1px 0 rgba(255,255,255,.08)}
 
-.tab{color:rgba(255,255,255,.3);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;padding:10px 2px;font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;transition:all .15s;white-space:nowrap}
+/* Tabs */
+.tab{color:rgba(255,255,255,.3);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;padding:10px 3px;font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;transition:all .15s;white-space:nowrap;flex-shrink:0}
 .tab.on{color:#fff;border-bottom-color:var(--acc)}
 .tab:hover:not(.on){color:rgba(255,255,255,.6)}
 
-.chip{border-radius:9999px;padding:7px 14px;font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;color:rgba(255,255,255,.38);cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:all .14s}
+/* Chip */
+.chip{border-radius:9999px;padding:7px 14px;font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;color:rgba(255,255,255,.38);cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:all .14s;position:relative;overflow:hidden}
 .chip:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.08)}
 .chip.on{color:#fff;background:rgba(123,164,255,.16);border-color:rgba(123,164,255,.4);box-shadow:0 0 14px rgba(123,164,255,.14)}
 
-.rrow{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);transition:all .12s}
-.rrow:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.1)}
+/* Row */
+.rrow{display:flex;align-items:center;gap:7px;padding:9px 11px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);transition:all .12s;position:relative}
+.rrow:hover{background:rgba(255,255,255,.065);border-color:rgba(255,255,255,.1)}
 .rrow.sel{background:rgba(123,164,255,.08);border-color:rgba(123,164,255,.22)}
+.rrow.fav-row{border-color:rgba(251,191,36,.18)}
 
+/* Buttons */
 .cbtn{border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif;color:rgba(255,255,255,.38);cursor:pointer;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);transition:all .12s;white-space:nowrap;flex-shrink:0}
 .cbtn:hover{background:rgba(255,255,255,.12);color:#fff}
 .cbtn.ok{background:rgba(60,200,100,.14);border-color:rgba(60,200,100,.32);color:rgba(80,220,120,.9)}
+.cbtn.danger{background:rgba(220,60,60,.12);border-color:rgba(220,60,60,.28);color:rgba(255,100,80,.8)}
 
-.cb{width:16px;height:16px;border-radius:4px;flex-shrink:0;cursor:pointer;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;transition:all .12s}
+/* Checkbox */
+.cb{width:15px;height:15px;border-radius:4px;flex-shrink:0;cursor:pointer;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;transition:all .12s}
 .cb.on{background:rgba(123,164,255,.28);border-color:rgba(123,164,255,.6)}
 
+/* Star */
+.star{background:none;border:none;cursor:pointer;font-size:14px;color:rgba(255,255,255,.2);transition:all .15s;flex-shrink:0;padding:2px;line-height:1}
+.star:hover{color:rgba(251,191,36,.7);transform:scale(1.2)}
+.star.on{color:#fbbf24}
+
+/* Generate button */
 .gbtn{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(80,120,255,.28) 0%,rgba(150,80,255,.22) 100%);border:1px solid rgba(123,164,255,.32);transition:all .2s;animation:glow-pulse 3s ease-in-out infinite}
 .gbtn:hover{background:linear-gradient(135deg,rgba(80,120,255,.42) 0%,rgba(150,80,255,.36) 100%);border-color:rgba(123,164,255,.55);box-shadow:0 0 32px rgba(123,164,255,.22)}
 .gbtn:active{transform:scale(.98)}
 .gbtn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);transform:translateX(-100%);transition:transform .55s}
 .gbtn:hover::after{transform:translateX(100%)}
 
-.grad{background:linear-gradient(135deg,#fff 0%,rgba(180,200,255,.95) 50%,#fff 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+/* Ripple */
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.12);width:20px;height:20px;margin-top:-10px;margin-right:-10px;animation:ripple .5s ease-out forwards;pointer-events:none}
 
+/* Gradient text */
+.grad{background:linear-gradient(135deg,#fff 0%,rgba(170,195,255,.95) 50%,#fff 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.grad2{background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* Dom btn */
 .dom{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:700;font-family:'Courier New',monospace;cursor:pointer;transition:all .13s;border:1px solid transparent;color:rgba(255,255,255,.3);background:none}
 .dom.on{color:var(--acc);background:rgba(123,164,255,.12);border-color:rgba(123,164,255,.3)}
 
-.snum{width:24px;height:24px;border-radius:50%;background:rgba(123,164,255,.14);border:1px solid rgba(123,164,255,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:rgba(123,164,255,.9);flex-shrink:0}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:9999px;font-size:10px;font-weight:700;letter-spacing:.08em;background:rgba(123,164,255,.1);border:1px solid rgba(123,164,255,.2);color:rgba(123,164,255,.85)}
-.key{display:inline-flex;align-items:center;justify-content:center;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.4);font-family:'Courier New',monospace}
-.sval{font-size:15px;font-weight:900;color:var(--acc);font-variant-numeric:tabular-nums}
-.hitem{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .12s}
-.hitem:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.11)}
-.titem{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;animation:slideup .2s ease;white-space:nowrap}
-.mback{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px}
+/* Mode toggle (single/batch) */
+.modeswitch{display:flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px;margin-bottom:16px}
+.modeswitch button{flex:1;border:none;background:none;color:rgba(255,255,255,.35);font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;border-radius:7px;padding:7px;cursor:pointer;transition:all .15s}
+.modeswitch button.on{background:rgba(123,164,255,.18);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)}
 
+/* Sort select */
+.sortsel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.55);border-radius:8px;padding:4px 8px;font-size:11px;font-weight:600;font-family:'Cairo',sans-serif;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none}
+.sortsel option{background:#0d0d20;color:#fff}
+
+/* Step */
+.snum{width:24px;height:24px;border-radius:50%;background:rgba(123,164,255,.14);border:1px solid rgba(123,164,255,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:rgba(123,164,255,.9);flex-shrink:0}
+
+/* Badge */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:9999px;font-size:10px;font-weight:700;letter-spacing:.08em;background:rgba(123,164,255,.1);border:1px solid rgba(123,164,255,.2);color:rgba(123,164,255,.85)}
+.notif{position:absolute;top:-5px;right:-6px;min-width:16px;height:16px;border-radius:9999px;background:var(--ylw);color:#000;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 3px;animation:badge-in .3s ease}
+
+/* Key */
+.key{display:inline-flex;align-items:center;justify-content:center;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.4);font-family:'Courier New',monospace}
+
+/* Stat */
+.sval{font-size:16px;font-weight:900;color:var(--acc);font-variant-numeric:tabular-nums}
+
+/* Toast */
+.titem{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;white-space:nowrap;position:relative;overflow:hidden}
+.tprog{position:absolute;bottom:0;left:0;height:2px;background:rgba(255,255,255,.2);animation:progress 2.6s linear forwards}
+
+/* History / Favs item */
+.hitem{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);transition:all .12s}
+.hitem:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.11)}
+
+/* Modal */
+.mback{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px}
+
+/* Typewriter cursor */
+.tw-cursor{display:inline-block;width:2px;height:.85em;background:var(--acc);margin-right:2px;vertical-align:middle;animation:blink 1s infinite}
+
+/* Responsive */
 @media(min-width:1024px){.grid2{display:grid;grid-template-columns:420px 1fr;gap:16px;align-items:start;max-width:920px;margin:0 auto}}
 @media(max-width:1023px){.grid2{display:flex;flex-direction:column;max-width:600px;margin:0 auto;gap:12px}}
 @media(max-width:767px){.desktop{display:none!important}}
 @media(min-width:768px){.mobile{display:none!important}}
 
+/* Scrollbar */
 ::-webkit-scrollbar{width:3px;height:3px}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
 input[type=search]::-webkit-search-cancel-button{display:none}
+textarea{resize:vertical}
+
+/* Color dots for presets */
+.cdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+
+/* Fav empty */
+.empty-state{text-align:center;padding:28px 16px}
+.empty-icon{width:52px;height:52px;border-radius:50%;background:rgba(123,164,255,.07);border:1px solid rgba(123,164,255,.14);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+
+/* Export icons */
+.exbtn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:10px;font-size:10px;font-weight:700;font-family:'Cairo',sans-serif;color:rgba(255,255,255,.35);cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);transition:all .13s;flex:1;min-width:0}
+.exbtn:hover{background:rgba(255,255,255,.09);color:#fff;border-color:rgba(255,255,255,.15)}
+.exbtn svg{opacity:.5;transition:opacity .13s}
+.exbtn:hover svg{opacity:1}
+
+/* Progress bar for loading */
+.pbar{height:2px;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:1px;width:0;transition:width .3s ease}
 </style>
 </head>
 <body>
@@ -100,6 +176,8 @@ input[type=search]::-webkit-search-cancel-button{display:none}
   <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260315_073750_51473149-4350-4920-ae24-c8214286f323.mp4" type="video/mp4">
 </video>
 <div class="ovl"></div>
+<canvas id="ptc"></canvas>
+<canvas id="cfc"></canvas>
 
 <div class="wrap">
 
@@ -112,37 +190,60 @@ input[type=search]::-webkit-search-cancel-button{display:none}
         </div>
         <div>
           <div style="font-weight:900;font-size:1rem;letter-spacing:-.01em;line-height:1;">715 ميل</div>
-          <div style="font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.12em;text-transform:uppercase;margin-top:2px;" class="desktop">Gmail Alias Pro</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.1em;text-transform:uppercase;margin-top:2px;" class="desktop">Gmail Alias Pro</div>
         </div>
       </div>
-      <div style="display:flex;align-items:center;gap:20px;" class="desktop">
-        <div style="text-align:center;"><div id="sg" class="sval">0</div><div style="font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.08em;">تم توليده</div></div>
-        <div style="width:1px;height:26px;background:rgba(255,255,255,.07)"></div>
-        <div style="text-align:center;"><div id="sc" class="sval">0</div><div style="font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.08em;">تم نسخه</div></div>
+
+      <div style="display:flex;align-items:center;gap:18px;" class="desktop">
+        <div style="text-align:center;"><div id="sg" class="sval">0</div><div style="font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;">توليد</div></div>
+        <div style="width:1px;height:22px;background:rgba(255,255,255,.07)"></div>
+        <div style="text-align:center;"><div id="sc" class="sval">0</div><div style="font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;">نسخ</div></div>
+        <div style="width:1px;height:22px;background:rgba(255,255,255,.07)"></div>
+        <div style="text-align:center;position:relative;">
+          <div id="sf" class="sval" style="color:var(--ylw);">0</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;">مفضلة</div>
+        </div>
       </div>
+
       <div style="display:flex;align-items:center;gap:7px;">
         <span class="pulse-a" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(80,220,120,.75);flex-shrink:0;"></span>
-        <span style="font-size:11px;color:rgba(255,255,255,.25);" class="desktop">مفعّل · رسمي من Google</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.25);" class="desktop">مفعّل · رسمي</span>
       </div>
     </div>
   </nav>
 
   <!-- HERO -->
-  <div style="text-align:center;margin-bottom:26px;padding:0 8px;">
-    <div class="badge" style="margin-bottom:12px;display:inline-flex;">✦ مولّد عناوين Gmail البديلة</div>
-    <h1 class="grad" style="font-weight:900;font-size:clamp(1.55rem,5vw,2.5rem);letter-spacing:-.02em;line-height:1.2;margin-bottom:10px;">عناوين @gmail.com<br>حقيقية وغير محدودة</h1>
-    <p style="font-size:13px;color:rgba(255,255,255,.35);max-width:400px;margin:0 auto;line-height:1.8;">استخدم ميزة الأسماء البديلة الرسمية من Google — كل رسالة تصل مباشرة إلى صندوقك</p>
+  <div style="text-align:center;margin-bottom:28px;padding:0 8px;">
+    <div class="badge" style="margin-bottom:12px;display:inline-flex;">✦ الجيل القادم لإدارة عناوين Gmail</div>
+    <h1 class="grad" style="font-weight:900;font-size:clamp(1.5rem,5vw,2.5rem);letter-spacing:-.02em;line-height:1.2;margin-bottom:12px;">
+      عناوين @gmail.com<br>حقيقية وغير محدودة
+    </h1>
+    <div style="font-size:13px;color:rgba(255,255,255,.32);min-height:22px;margin-bottom:14px;">
+      <span id="tw"></span><span class="tw-cursor"></span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">
+      <span style="font-size:11px;color:rgba(255,255,255,.22);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:9999px;padding:3px 10px;">✓ بدون تسجيل</span>
+      <span style="font-size:11px;color:rgba(255,255,255,.22);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:9999px;padding:3px 10px;">✓ يعمل فوراً</span>
+      <span style="font-size:11px;color:rgba(255,255,255,.22);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:9999px;padding:3px 10px;">✓ مفضلات وتصدير</span>
+      <span style="font-size:11px;color:rgba(255,255,255,.22);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:9999px;padding:3px 10px;">✓ فلاتر Gmail</span>
+    </div>
   </div>
 
   <!-- GRID -->
   <div class="grid2">
 
-    <!-- LEFT PANEL -->
+    <!-- ═══ LEFT PANEL ═══ -->
     <div style="display:flex;flex-direction:column;gap:12px;">
       <div class="lgs" style="border-radius:22px;padding:22px 20px;">
 
-        <!-- Username -->
-        <div style="margin-bottom:16px;">
+        <!-- Mode toggle single/batch -->
+        <div class="modeswitch">
+          <button id="ms-single" class="on" onclick="setMode('single')">👤 مستخدم واحد</button>
+          <button id="ms-batch" onclick="setMode('batch')">📋 دفعة</button>
+        </div>
+
+        <!-- Single input -->
+        <div id="single-inp">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
             <label style="font-size:11px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.1em;">اسم المستخدم</label>
             <span id="cc" style="font-size:10px;color:rgba(255,255,255,.18);font-family:'Courier New',monospace;"></span>
@@ -152,14 +253,22 @@ input[type=search]::-webkit-search-cancel-button{display:none}
               style="flex:1;padding:13px 14px;font-size:15px;font-weight:700;border-radius:0;min-width:0;text-align:left;"
               oninput="onInp()" onkeydown="hKey(event)"/>
             <div style="display:flex;align-items:center;padding:0 12px;background:rgba(255,255,255,.05);border-right:1px solid rgba(255,255,255,.07);flex-shrink:0;">
-              <span id="dd" style="font-size:11.5px;font-weight:700;color:var(--acc);font-family:'Courier New',monospace;white-space:nowrap;">@gmail.com</span>
+              <span id="dd" style="font-size:11px;font-weight:700;color:var(--acc);font-family:'Courier New',monospace;white-space:nowrap;">@gmail.com</span>
             </div>
           </div>
           <div id="err" style="display:none;font-size:12px;color:rgba(255,110,90,.85);margin-top:6px;padding:0 4px;"></div>
         </div>
 
+        <!-- Batch input -->
+        <div id="batch-inp" style="display:none;">
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">أسماء المستخدمين (سطر لكل اسم)</div>
+          <textarea id="bta" class="field lg" rows="4" dir="ltr" placeholder="ahmed123&#10;sara456&#10;omar789"
+            style="width:100%;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Courier New',monospace;line-height:1.7;"></textarea>
+          <div id="berr" style="display:none;font-size:12px;color:rgba(255,110,90,.85);margin-top:6px;padding:0 4px;"></div>
+        </div>
+
         <!-- Domain -->
-        <div style="margin-bottom:18px;">
+        <div style="margin:16px 0 18px;">
           <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">النطاق</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
             <button class="dom lg on" data-d="@gmail.com" onclick="setDom(this)" style="border-radius:8px;">@gmail.com</button>
@@ -168,13 +277,14 @@ input[type=search]::-webkit-search-cancel-button{display:none}
         </div>
 
         <!-- Tabs -->
-        <div style="display:flex;gap:18px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:16px;overflow-x:auto;">
-          <button id="t-plus" class="tab on" onclick="swTab('plus')">✦ عناوين ذكية</button>
-          <button id="t-dot" class="tab" onclick="swTab('dot')">⬤ نقطة</button>
-          <button id="t-history" class="tab" onclick="swTab('history')">🕐 السجل</button>
+        <div style="display:flex;gap:16px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:16px;overflow-x:auto;">
+          <button id="t-plus"    class="tab on" onclick="swTab('plus')">✦ ذكية</button>
+          <button id="t-dot"     class="tab"    onclick="swTab('dot')">⬤ نقطة</button>
+          <button id="t-history" class="tab"    onclick="swTab('history')">🕐 سجل</button>
+          <button id="t-favs"    class="tab"    onclick="swTab('favs')">★ مفضلة</button>
         </div>
 
-        <!-- Plus -->
+        <!-- Plus mode -->
         <div id="m-plus">
           <div style="margin-bottom:14px;">
             <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.1em;margin-bottom:9px;">اختيارات سريعة</div>
@@ -188,32 +298,53 @@ input[type=search]::-webkit-search-cancel-button{display:none}
           </div>
         </div>
 
-        <!-- Dot -->
+        <!-- Dot mode -->
         <div id="m-dot" style="display:none;">
           <div class="lg" style="border-radius:12px;padding:14px;font-size:13px;color:rgba(255,255,255,.4);line-height:1.85;">
-            Google يتجاهل النقاط في اسم المستخدم — لذا
+            Google يتجاهل النقاط كلياً —
             <span dir="ltr" style="color:var(--acc);font-family:'Courier New',monospace;font-size:12px;">a.h.med</span>
-            و <span dir="ltr" style="color:var(--acc);font-family:'Courier New',monospace;font-size:12px;">ahmed</span>
+            و<span dir="ltr" style="color:var(--acc);font-family:'Courier New',monospace;font-size:12px;"> ahmed</span>
             صندوق واحد بالضبط.
             <div id="dc" style="margin-top:8px;color:rgba(255,255,255,.55);font-weight:700;font-size:12px;"></div>
           </div>
         </div>
 
-        <!-- History -->
+        <!-- History mode -->
         <div id="m-history" style="display:none;">
           <div id="hl" style="display:flex;flex-direction:column;gap:6px;"></div>
-          <div id="he" style="text-align:center;padding:24px 0;font-size:13px;color:rgba(255,255,255,.22);">لا يوجد سجل بعد</div>
+          <div id="he" class="empty-state" style="display:none;">
+            <div class="empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(123,164,255,.5)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <div style="font-size:13px;color:rgba(255,255,255,.22);">لا يوجد سجل بعد</div>
+          </div>
         </div>
 
-        <!-- Gen btn -->
+        <!-- Favs mode -->
+        <div id="m-favs" style="display:none;">
+          <div id="fl" style="display:flex;flex-direction:column;gap:6px;"></div>
+          <div id="fe" class="empty-state" style="display:none;">
+            <div class="empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(251,191,36,.45)" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+            <div style="font-size:13px;color:rgba(255,255,255,.22);">لا توجد مفضلات بعد</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.15);margin-top:4px;">اضغط ★ على أي عنوان لحفظه</div>
+          </div>
+          <div id="fl-actions" style="display:none;margin-top:10px;">
+            <button onclick="clearFavs()" class="cbtn danger" style="width:100%;border-radius:9px;padding:8px;font-size:12px;">🗑 مسح جميع المفضلات</button>
+          </div>
+        </div>
+
+        <!-- Gen button -->
         <button id="gb" onclick="gen()" class="gbtn lgs"
           style="width:100%;margin-top:18px;border-radius:13px;padding:14px;font-size:14px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;border:none;">
           <span id="gi">←</span>
           <span id="gt">توليد عناوين Gmail</span>
         </button>
+
+        <!-- Progress bar -->
+        <div style="height:2px;background:rgba(255,255,255,.05);border-radius:1px;margin-top:8px;overflow:hidden;">
+          <div id="pbar" class="pbar"></div>
+        </div>
       </div>
 
-      <!-- Shortcuts (desktop) -->
+      <!-- Shortcuts card (desktop) -->
       <div class="lgs desktop" style="border-radius:18px;padding:16px 18px;">
         <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.22);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;">اختصارات لوحة المفاتيح</div>
         <div style="display:flex;flex-direction:column;gap:8px;">
@@ -221,30 +352,40 @@ input[type=search]::-webkit-search-cancel-button{display:none}
           <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;color:rgba(255,255,255,.32);">نسخ الكل</span><div style="display:flex;gap:4px;"><span class="key">Ctrl</span><span class="key">K</span></div></div>
           <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;color:rgba(255,255,255,.32);">تحديد الكل</span><div style="display:flex;gap:4px;"><span class="key">Ctrl</span><span class="key">A</span></div></div>
           <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;color:rgba(255,255,255,.32);">إغلاق</span><span class="key">Esc</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;color:rgba(255,255,255,.32);">سحب للنسخ (موبايل)</span><span style="font-size:11px;color:rgba(255,255,255,.2);">← سحب</span></div>
         </div>
       </div>
     </div>
 
-    <!-- RIGHT PANEL -->
+    <!-- ═══ RIGHT PANEL ═══ -->
     <div style="display:flex;flex-direction:column;gap:12px;">
 
       <!-- Placeholder -->
-      <div id="rph" class="lgs" style="border-radius:22px;padding:48px 20px;text-align:center;">
-        <div style="width:58px;height:58px;border-radius:50%;background:rgba(123,164,255,.07);border:1px solid rgba(123,164,255,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="rgba(123,164,255,.5)" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      <div id="rph" class="lgs" style="border-radius:22px;padding:52px 20px;text-align:center;">
+        <div class="empty-icon" style="margin:0 auto 16px;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(123,164,255,.5)" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
         </div>
-        <div style="font-size:14px;font-weight:700;color:rgba(255,255,255,.28);margin-bottom:6px;">لا توجد نتائج بعد</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.16);line-height:1.8;">أدخل اسم المستخدم واضغط توليد</div>
+        <div style="font-size:15px;font-weight:800;color:rgba(255,255,255,.28);margin-bottom:6px;">لا توجد نتائج بعد</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.16);line-height:1.85;">أدخل اسم المستخدم<br>واضغط توليد عناوين Gmail</div>
       </div>
 
-      <!-- Results -->
+      <!-- Results card -->
       <div id="rc" class="lgs" style="border-radius:22px;padding:20px;display:none;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
           <div>
             <div id="rl" style="font-size:14px;font-weight:800;color:#fff;"></div>
             <div id="sl" style="font-size:11px;color:rgba(255,255,255,.28);margin-top:2px;display:none;"></div>
           </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+            <select class="sortsel" onchange="sortList(this.value)" id="sortdd">
+              <option value="orig">ترتيب اللقاء</option>
+              <option value="az">أ → ي</option>
+              <option value="za">ي → أ</option>
+              <option value="len">الأقصر أولاً</option>
+              <option value="rand">عشوائي</option>
+            </select>
             <button onclick="selAll()" class="cbtn">تحديد الكل</button>
             <button onclick="copySel()" id="csb" class="cbtn" style="display:none;">نسخ المحدد</button>
             <button onclick="cpAll()" class="cbtn">نسخ الكل</button>
@@ -254,19 +395,39 @@ input[type=search]::-webkit-search-cancel-button{display:none}
         <!-- Search -->
         <div class="lg" style="border-radius:10px;display:flex;align-items:center;gap:8px;padding:9px 12px;margin-bottom:12px;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="2.5" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input id="si" type="search" placeholder="ابحث في العناوين…" class="field"
-            style="flex:1;font-size:13px;background:none;border-radius:0;padding:0;" oninput="filt()"/>
+          <input id="si" type="search" placeholder="ابحث في العناوين…" class="field" style="flex:1;font-size:13px;background:none;border-radius:0;padding:0;" oninput="filt()"/>
+          <span id="fcount" style="font-size:11px;color:rgba(255,255,255,.22);white-space:nowrap;"></span>
         </div>
 
         <!-- List -->
-        <div id="rl2" style="display:flex;flex-direction:column;gap:5px;max-height:360px;overflow-y:auto;padding-left:2px;"></div>
-        <div id="dn" style="display:none;text-align:center;font-size:11px;color:rgba(255,255,255,.18);margin-top:8px;"></div>
+        <div id="rl2" style="display:flex;flex-direction:column;gap:5px;max-height:340px;overflow-y:auto;padding-left:2px;"></div>
+        <div id="dn" style="display:none;text-align:center;font-size:11px;color:rgba(255,255,255,.18);margin-top:8px;padding:6px;"></div>
 
-        <!-- Export -->
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);">
-          <button onclick="exTXT()" class="cbtn lg" style="flex:1;border-radius:9px;padding:8px;font-size:12px;text-align:center;">⬇ TXT</button>
-          <button onclick="exCSV()" class="cbtn lg" style="flex:1;border-radius:9px;padding:8px;font-size:12px;text-align:center;">⬇ CSV</button>
-          <button onclick="shareR()" class="cbtn lg" style="flex:1;border-radius:9px;padding:8px;font-size:12px;text-align:center;">↗ مشاركة</button>
+        <!-- Export bar -->
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);">
+          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">تصدير</div>
+          <div style="display:flex;gap:6px;">
+            <button onclick="exTXT()" class="exbtn lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+              TXT
+            </button>
+            <button onclick="exCSV()" class="exbtn lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+              CSV
+            </button>
+            <button onclick="exXML()" class="exbtn lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l4 4-4 4M12 16h8"/><rect x="12" y="3" width="8" height="4" rx="1"/><rect x="12" y="9" width="8" height="4" rx="1"/><rect x="12" y="15" width="8" height="4" rx="1"/></svg>
+              XML
+            </button>
+            <button onclick="exJSON()" class="exbtn lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8H5a2 2 0 00-2 2v4a2 2 0 002 2h2"/><path d="M17 8h2a2 2 0 012 2v4a2 2 0 01-2 2h-2"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+              JSON
+            </button>
+            <button onclick="shareR()" class="exbtn lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              مشاركة
+            </button>
+          </div>
         </div>
       </div>
 
@@ -274,31 +435,55 @@ input[type=search]::-webkit-search-cancel-button{display:none}
       <div class="lgs" style="border-radius:22px;padding:20px;">
         <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.22);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;">كيفية الاستخدام</div>
         <div style="display:flex;flex-direction:column;gap:13px;">
-          <div style="display:flex;align-items:flex-start;gap:12px;"><div class="snum">١</div><div><div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:3px;">أعطِ العنوان البديل للمواقع</div><div style="font-size:12px;color:rgba(255,255,255,.32);line-height:1.7;">استخدمه عند التسجيل في أي موقع أو خدمة</div></div></div>
+          <div style="display:flex;align-items:flex-start;gap:12px;"><div class="snum">١</div><div><div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:3px;">أعطِ العنوان البديل للمواقع</div><div style="font-size:12px;color:rgba(255,255,255,.32);line-height:1.7;">استخدمه عند التسجيل في أي موقع أو خدمة أو تطبيق</div></div></div>
           <div style="display:flex;align-items:flex-start;gap:12px;"><div class="snum">٢</div><div><div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:3px;">الرسائل تصل تلقائياً لصندوقك</div><div style="font-size:12px;color:rgba(255,255,255,.32);line-height:1.7;">لا حاجة لحساب Gmail جديد</div></div></div>
-          <div style="display:flex;align-items:flex-start;gap:12px;"><div class="snum">٣</div><div><div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:3px;">نظّم بريدك بفلاتر Gmail</div><div style="font-size:12px;color:rgba(255,255,255,.32);line-height:1.7;">انسخ زر "فلتر" وأنشئ قاعدة في Gmail لفرز رسائل هذا العنوان</div></div></div>
+          <div style="display:flex;align-items:flex-start;gap:12px;"><div class="snum">٣</div><div><div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:3px;">صدّر فلتر XML واستورده في Gmail</div><div style="font-size:12px;color:rgba(255,255,255,.32);line-height:1.7;">زر XML ← فلاتر Gmail ← استيراد الفلاتر — يُنظّم بريدك تلقائياً</div></div></div>
         </div>
       </div>
 
-      <div style="text-align:center;font-size:11px;color:rgba(255,255,255,.14);line-height:2;">ميزة رسمية من Google · لا خوادم · لا بيانات محفوظة<br>715 ميل © 2026</div>
+      <div style="text-align:center;font-size:11px;color:rgba(255,255,255,.14);line-height:2;">ميزة رسمية من Google · لا خوادم · لا بيانات محفوظة<br>715 ميل © 2026 — جميع الحقوق محفوظة</div>
     </div>
   </div>
 </div>
 
 <!-- Mobile bottom bar -->
-<div id="mob-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:50;padding:10px 16px 22px;background:linear-gradient(to top,rgba(5,5,16,.97) 0%,transparent 100%);display:none;gap:8px;">
-  <button onclick="exTXT()" class="cbtn lg" style="flex:1;border-radius:10px;padding:10px;font-size:12px;text-align:center;">⬇ TXT</button>
+<div id="mob-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:50;padding:10px 16px 22px;background:linear-gradient(to top,rgba(5,5,16,.98),transparent);display:none;gap:6px;">
+  <button onclick="exXML()" class="cbtn lg" style="flex:1;border-radius:10px;padding:10px;font-size:11px;text-align:center;">XML</button>
   <button onclick="cpAll()" class="cbtn lg" style="flex:1;border-radius:10px;padding:10px;font-size:12px;text-align:center;">نسخ الكل</button>
-  <button onclick="shareR()" class="cbtn lg" style="flex:1;border-radius:10px;padding:10px;font-size:12px;text-align:center;">↗ مشاركة</button>
+  <button onclick="exTXT()" class="cbtn lg" style="flex:1;border-radius:10px;padding:10px;font-size:11px;text-align:center;">TXT</button>
+  <button onclick="shareR()" class="cbtn lg" style="flex:1;border-radius:10px;padding:10px;font-size:12px;text-align:center;">↗</button>
 </div>
 
 <!-- QR Modal -->
-<div id="qm" class="mback" style="display:none;" onclick="closeQR(event)">
+<div id="qm" class="mback" style="display:none;" onclick="closeModal('qm',event)">
   <div class="lgs slideup" style="border-radius:22px;padding:26px;text-align:center;max-width:280px;width:100%;">
     <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:4px;">رمز QR للعنوان</div>
     <div id="qe" dir="ltr" style="font-size:11px;color:var(--acc);font-family:'Courier New',monospace;margin-bottom:16px;word-break:break-all;"></div>
     <div id="qc" style="display:inline-block;background:#fff;border-radius:12px;padding:12px;"></div>
-    <div style="margin-top:16px;"><button onclick="closeQR()" class="cbtn lg" style="border-radius:9px;padding:8px 24px;font-size:13px;">إغلاق</button></div>
+    <div style="margin-top:16px;display:flex;gap:8px;justify-content:center;">
+      <button onclick="cpOne(null,document.getElementById('qe').textContent)" class="cbtn lg" style="border-radius:9px;padding:8px 16px;font-size:12px;">نسخ</button>
+      <button onclick="closeModal('qm')" class="cbtn lg" style="border-radius:9px;padding:8px 16px;font-size:12px;">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- XML Modal -->
+<div id="xm" class="mback" style="display:none;" onclick="closeModal('xm',event)">
+  <div class="lgs slideup" style="border-radius:22px;padding:22px;max-width:520px;width:100%;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <div>
+        <div style="font-size:14px;font-weight:800;color:#fff;">فلتر Gmail XML</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.32);margin-top:3px;">استورده مباشرة في Gmail لتنظيم بريدك تلقائياً</div>
+      </div>
+      <button onclick="closeModal('xm')" class="cbtn" style="font-size:18px;padding:4px 10px;line-height:1;">×</button>
+    </div>
+    <textarea id="xmltxt" class="field lg" rows="8" dir="ltr" readonly
+      style="width:100%;border-radius:10px;padding:12px;font-size:10px;font-family:'Courier New',monospace;line-height:1.6;color:rgba(255,255,255,.65);resize:none;"></textarea>
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button onclick="dlXML()" class="cbtn lg" style="flex:1;border-radius:9px;padding:9px;font-size:12px;text-align:center;">⬇ تحميل XML</button>
+      <button onclick="cpXML()" class="cbtn lg" id="xcpbtn" style="flex:1;border-radius:9px;padding:9px;font-size:12px;text-align:center;">نسخ XML</button>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,.25);line-height:1.7;">📌 Gmail ← الإعدادات ← الفلاتر والعناوين المحظورة ← استيراد فلاتر</div>
   </div>
 </div>
 
@@ -306,94 +491,192 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 <div id="ts" style="position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;"></div>
 
 <script>
-/* STATE */
-let mode='plus',dom='@gmail.com',preset=null,all=[],sel=new Set(),sGen=0,sCp=0;
+/* ─── STATE ─── */
+let mode='plus', batchMode=false, dom='@gmail.com', preset=null;
+let all=[], origAll=[], sel=new Set(), sGen=0, sCp=0;
+
 const $=id=>document.getElementById(id);
 
 const PRESETS=[
-  {l:'📬 نشرات',t:'newsletter'},{l:'🛒 تسوق',t:'shopping'},
-  {l:'👥 تواصل',t:'social'},{l:'💼 عمل',t:'work'},
-  {l:'🔬 تجربة',t:'trial'},{l:'💰 مالية',t:'finance'},
-  {l:'🎮 ألعاب',t:'gaming'},{l:'📦 توصيل',t:'delivery'},
+  {l:'📬 نشرات',t:'newsletter',c:'#60a5fa'},
+  {l:'🛒 تسوق',t:'shopping',c:'#34d399'},
+  {l:'👥 تواصل',t:'social',c:'#a78bfa'},
+  {l:'💼 عمل',t:'work',c:'#fbbf24'},
+  {l:'🔬 تجربة',t:'trial',c:'#f472b6'},
+  {l:'💰 مالية',t:'finance',c:'#4ade80'},
+  {l:'🎮 ألعاب',t:'gaming',c:'#f87171'},
+  {l:'📦 توصيل',t:'delivery',c:'#fb923c'},
 ];
 
-/* CHIPS */
-(()=>{const w=$('chips');PRESETS.forEach(p=>{const b=document.createElement('button');b.className='chip lg';b.dataset.t=p.t;b.textContent=p.l;b.onclick=()=>togP(p.t,b);w.appendChild(b);});})();
+/* ─── PARTICLE SYSTEM ─── */
+(()=>{
+  const c=$('ptc'),x=c.getContext('2d');
+  let pts=[];
+  function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
+  class P{
+    constructor(){this.reset();}
+    reset(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.vx=(Math.random()-.5)*.25;this.vy=(Math.random()-.5)*.25;this.r=Math.random()*1.2+.3;this.a=Math.random()*.35+.08;}
+    step(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>c.width)this.vx*=-1;if(this.y<0||this.y>c.height)this.vy*=-1;}
+    draw(){x.beginPath();x.arc(this.x,this.y,this.r,0,Math.PI*2);x.fillStyle=`rgba(123,164,255,${this.a})`;x.fill();}
+  }
+  function init(){resize();pts=Array.from({length:55},()=>new P());}
+  function frame(){
+    x.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{p.step();p.draw();});
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<130){x.beginPath();x.moveTo(pts[i].x,pts[i].y);x.lineTo(pts[j].x,pts[j].y);x.strokeStyle=`rgba(123,164,255,${.12*(1-d/130)})`;x.lineWidth=.5;x.stroke();}
+    }
+    requestAnimationFrame(frame);
+  }
+  window.addEventListener('resize',()=>{resize();pts.forEach(p=>{if(p.x>c.width)p.x=c.width;if(p.y>c.height)p.y=c.height;});});
+  init();frame();
+})();
 
-/* TOAST */
+/* ─── CONFETTI ─── */
+function confetti(){
+  const c=$('cfc'),x=c.getContext('2d');
+  c.width=window.innerWidth;c.height=window.innerHeight;c.style.display='block';
+  const cols=['#7ba4ff','#a78bfa','#4ade80','#fbbf24','#f472b6','#fff'];
+  const pts=Array.from({length:130},()=>({
+    x:Math.random()*c.width,y:-10-Math.random()*200,
+    vx:(Math.random()-.5)*4,vy:Math.random()*4+2,
+    r:Math.random()*4+2,col:cols[Math.floor(Math.random()*cols.length)],
+    rot:Math.random()*Math.PI*2,vr:(Math.random()-.5)*.15,
+    shape:Math.random()>.5?'rect':'circle'
+  }));
+  let f=0;
+  (function tick(){
+    x.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.vy+=.06;p.rot+=p.vr;
+      const a=Math.max(0,1-f/90);
+      x.save();x.globalAlpha=a;x.translate(p.x,p.y);x.rotate(p.rot);x.fillStyle=p.col;
+      if(p.shape==='circle'){x.beginPath();x.arc(0,0,p.r,0,Math.PI*2);x.fill();}
+      else x.fillRect(-p.r,-p.r/2,p.r*2,p.r);
+      x.restore();
+    });
+    if(++f<100)requestAnimationFrame(tick);
+    else c.style.display='none';
+  })();
+}
+
+/* ─── TYPEWRITER ─── */
+(()=>{
+  const texts=['توليد عناوين Gmail البديلة بثوانٍ','احمِ خصوصيتك مع عناوين لا نهائية','نظّم بريدك بفلاتر تلقائية','صدّر قائمتك بتنسيقات متعددة'];
+  const el=$('tw');let ti=0,ci=0;
+  function type(){if(ci<texts[ti].length){el.textContent+=texts[ti][ci++];setTimeout(type,55);}else setTimeout(erase,2200);}
+  function erase(){if(el.textContent.length>0){el.textContent=el.textContent.slice(0,-1);setTimeout(erase,25);}else{ti=(ti+1)%texts.length;ci=0;setTimeout(type,400);}}
+  type();
+})();
+
+/* ─── CHIPS ─── */
+(()=>{
+  const w=$('chips');
+  PRESETS.forEach(p=>{
+    const b=document.createElement('button');b.className='chip lg';b.dataset.t=p.t;
+    b.innerHTML=`<span class="cdot" style="background:${p.c};margin-left:4px;"></span>${p.l}`;
+    b.onclick=e=>{addRipple(b,e);togP(p.t,b);};
+    w.appendChild(b);
+  });
+})();
+
+/* ─── RIPPLE ─── */
+function addRipple(el,e){
+  const r=document.createElement('span');r.className='ripple';
+  const rect=el.getBoundingClientRect();
+  r.style.cssText=`top:${e.clientY-rect.top}px;right:${e.clientX-rect.left}px;`;
+  el.appendChild(r);setTimeout(()=>r.remove(),550);
+}
+
+/* ─── TOAST ─── */
 function toast(msg,type='ok'){
-  const bg={ok:'rgba(10,35,20,.96)',err:'rgba(40,10,10,.96)',info:'rgba(8,16,40,.96)'};
+  const bg={ok:'rgba(10,38,20,.97)',err:'rgba(42,10,10,.97)',info:'rgba(8,16,44,.97)'};
   const ic={ok:'✓',err:'✕',info:'ℹ'};
   const el=document.createElement('div');
   el.className='titem lgs';
   el.style.cssText=`background:${bg[type]};border:1px solid rgba(255,255,255,.1);`;
-  el.innerHTML=`<span>${ic[type]}</span><span>${msg}</span>`;
+  el.innerHTML=`<span>${ic[type]}</span><span>${msg}</span><div class="tprog"></div>`;
   $('ts').appendChild(el);
-  setTimeout(()=>{el.style.cssText+=';opacity:0;transition:opacity .3s;';setTimeout(()=>el.remove(),320);},2600);
+  setTimeout(()=>{el.style.cssText+=';opacity:0;transition:opacity .3s;';setTimeout(()=>el.remove(),320);},2700);
 }
 
-/* STATS */
-function bump(k,v=1){if(k==='g'){sGen+=v;an($('sg'),sGen);}else{sCp+=v;an($('sc'),sCp);}}
-function an(el,t){const s=parseInt(el.textContent)||0,d=350,t0=performance.now();(function f(n){const p=Math.min((n-t0)/d,1);el.textContent=Math.round(s+(t-s)*p);if(p<1)requestAnimationFrame(f);})(t0);}
+/* ─── STATS ─── */
+function bump(k,v=1){if(k==='g'){sGen+=v;an($('sg'),sGen);}else if(k==='c'){sCp+=v;an($('sc'),sCp);}else{an($('sf'),getFavs().length);}}
+function an(el,t){const s=parseInt(el.textContent)||0,d=400,t0=performance.now();(function f(n){const p=Math.min((n-t0)/d,1);el.textContent=Math.round(s+(t-s)*p);if(p<1)requestAnimationFrame(f);})(t0);}
 
-/* DOMAIN */
+/* ─── MODE SWITCH ─── */
+function setMode(m){
+  batchMode=m==='batch';
+  $('ms-single').classList.toggle('on',!batchMode);
+  $('ms-batch').classList.toggle('on',batchMode);
+  $('single-inp').style.display=batchMode?'none':'block';
+  $('batch-inp').style.display=batchMode?'block':'none';
+  clr();
+}
+
+/* ─── DOMAIN ─── */
 function setDom(btn){dom=btn.dataset.d;document.querySelectorAll('.dom').forEach(b=>b.classList.remove('on'));btn.classList.add('on');$('dd').textContent=dom;clr();}
 
-/* PRESET */
+/* ─── PRESET ─── */
 function togP(t,btn){if(preset===t){preset=null;btn.classList.remove('on');}else{document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));preset=t;btn.classList.add('on');$('ti').value='';}clr();}
 
-/* TABS */
+/* ─── TABS ─── */
 function swTab(t){
   mode=t;
-  ['plus','dot','history'].forEach(id=>{$('t-'+id).classList.toggle('on',id===t);$('m-'+id).style.display=id===t?'block':'none';});
+  ['plus','dot','history','favs'].forEach(id=>{$('t-'+id).classList.toggle('on',id===t);$('m-'+id).style.display=id===t?'block':'none';});
   clr();
   if(t==='dot')upDot();
   if(t==='history')rHist();
+  if(t==='favs')rFavs();
 }
 
-/* INPUT */
+/* ─── INPUT ─── */
 function hKey(e){
   if(e.key==='Enter')gen();
   if(e.ctrlKey&&e.key==='k'){e.preventDefault();cpAll();}
   if(e.ctrlKey&&e.key==='a'&&all.length){e.preventDefault();selAll();}
 }
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')closeQR();
-  if(e.ctrlKey&&e.key==='k'&&!e.target.matches('input')){e.preventDefault();cpAll();}
+  if(e.key==='Escape'){closeModal('qm');closeModal('xm');}
+  if(e.ctrlKey&&e.key==='k'&&!e.target.matches('input,textarea')){e.preventDefault();cpAll();}
 });
 
 function onInp(){const u=uname();$('cc').textContent=u?u.length+'/30':'';clr();showErr('');upDot();}
 function onTi(){preset=null;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));clr();}
 function upDot(){
   const u=uname();if(!u||u.length<2){$('dc').textContent='';return;}
-  const base=u.replace(/\./g,''),tot=Math.pow(2,base.length-1)-1;
-  $('dc').textContent=`سيُولّد ${tot>50?'٥٠ من أصل '+tot.toLocaleString('ar-EG'):Math.min(tot,50)} تنويعاً`;
+  const b=u.replace(/\./g,''),tot=Math.pow(2,b.length-1)-1;
+  $('dc').textContent=`سيُولّد ${tot>50?'٥٠ من أصل '+tot.toLocaleString('ar-EG'):tot} تنويعاً`;
 }
 
-/* USERNAME */
+/* ─── USERNAME ─── */
 function uname(){return $('inp').value.trim().toLowerCase().replace(/@.*$/,'').replace(/\s+/g,'');}
 function validate(u){
   if(!u)return'أدخل اسم المستخدم في Gmail';
-  if(u.length<2)return'يجب أن يتكون من حرفين على الأقل';
+  if(u.length<2)return'حرفان على الأقل';
   if(u.length>30)return'لا يتجاوز ٣٠ حرفاً';
-  if(/^\.|\.$|\.\./.test(u))return'لا تبدأ أو تنتهي بنقطة، ولا نقطتين متتاليتين';
-  if(!/^[a-z0-9.]+$/.test(u))return'استخدم الحروف الإنجليزية والأرقام والنقاط فقط';
+  if(/^\.|\..$|\.\./.test(u))return'لا تبدأ أو تنتهي بنقطة، ولا نقطتين متتاليتين';
+  if(!/^[a-z0-9.]+$/.test(u))return'أحرف إنجليزية وأرقام ونقاط فقط';
   return'';
 }
 function showErr(m){const e=$('err');if(m){e.textContent='⚠ '+m;e.style.display='block';}else e.style.display='none';}
+function showBErr(m){const e=$('berr');if(m){e.textContent='⚠ '+m;e.style.display='block';}else e.style.display='none';}
 
-/* DOT ALGO */
+/* ─── DOT ALGO ─── */
 function dotVars(u,d){
-  const base=u.replace(/\./g,''),ch=base.split(''),n=ch.length-1,out=[],lim=Math.pow(2,n);
+  const b=u.replace(/\./g,''),ch=b.split(''),n=ch.length-1,out=[],lim=Math.pow(2,n);
   for(let i=1;i<lim&&out.length<50;i++){let r=ch[0];for(let j=0;j<n;j++){if(i&(1<<j))r+='.';r+=ch[j+1];}out.push(r+d);}
   return out;
 }
 
-/* GENERATE */
+/* ─── GENERATE ─── */
 function gen(){
+  if(batchMode){genBatch();return;}
   const u=uname(),er=validate(u);
   if(er){showErr(er);return;}
-  showErr('');setLoad(true);
+  showErr('');setLoad(true);animPbar();
+
   setTimeout(()=>{
     let list=[];
     if(mode==='plus'){
@@ -403,42 +686,84 @@ function gen(){
       if(!tags.length)PRESETS.forEach(p=>list.push(u+'+'+p.t+dom));
       else tags.forEach(t=>list.push(u+'+'+t+dom));
     } else if(mode==='dot'){
-      if(u.replace(/\./g,'').length<2){setLoad(false);showErr('يجب أن يحتوي الاسم على حرفين على الأقل');return;}
+      if(u.replace(/\./g,'').length<2){setLoad(false);showErr('حرفان على الأقل');return;}
       list=dotVars(u,dom);
     } else {setLoad(false);return;}
-    all=list;sel.clear();rRes(list,u);saveH(u);bump('g',list.length);setLoad(false);
-  },280);
+    finishGen(list,u);
+  },300);
 }
 
+function genBatch(){
+  const lines=$('bta').value.trim().split('\n').map(l=>l.trim().toLowerCase().replace(/@.*$/,'').replace(/\s+/g,'')).filter(Boolean);
+  if(!lines.length){showBErr('أدخل اسماً واحداً على الأقل');return;}
+  const invalid=lines.find(l=>validate(l));
+  if(invalid){showBErr(validate(invalid));return;}
+  showBErr('');setLoad(true);animPbar();
+  setTimeout(()=>{
+    let list=[];
+    lines.forEach(u=>{PRESETS.forEach(p=>list.push(u+'+'+p.t+dom));});
+    finishGen(list,'batch');
+  },300);
+}
+
+function finishGen(list,u){all=[...list];origAll=[...list];sel.clear();rRes(list,u);saveH(typeof u==='string'&&u!=='batch'?u:null);bump('g',list.length);setLoad(false);}
+
 function setLoad(on){
-  $('gb').disabled=on;
-  $('gt').textContent=on?'جاري التوليد…':'توليد عناوين Gmail';
+  $('gb').disabled=on;$('gt').textContent=on?'جاري التوليد…':'توليد عناوين Gmail';
   const gi=$('gi');
   if(on){const sp=document.createElement('div');sp.id='sp';sp.className='spin-a';sp.style.cssText='width:16px;height:16px;border:2px solid rgba(255,255,255,.15);border-top-color:var(--acc);border-radius:50%;flex-shrink:0;';gi.replaceWith(sp);}
   else{const sp=document.getElementById('sp');if(sp){const ni=document.createElement('span');ni.id='gi';ni.textContent='←';sp.replaceWith(ni);}}
 }
 
-/* RENDER */
+function animPbar(){
+  const pb=$('pbar');pb.style.transition='none';pb.style.width='0';
+  requestAnimationFrame(()=>{pb.style.transition='width 280ms ease';pb.style.width='100%';setTimeout(()=>{pb.style.transition='width .4s ease';pb.style.width='0';},320);});
+}
+
+/* ─── SORT ─── */
+function sortList(order){
+  const favs=getFavs();
+  let sorted=[...origAll];
+  if(order==='az')sorted.sort();
+  else if(order==='za')sorted.sort().reverse();
+  else if(order==='len')sorted.sort((a,b)=>a.length-b.length);
+  else if(order==='rand')sorted.sort(()=>Math.random()-.5);
+  all=sorted;
+  const container=$('rl2');container.innerHTML='';sel.clear();updSel();
+  sorted.forEach((e,i)=>container.appendChild(mkRow(e,i,favs)));
+  filt();
+}
+
+/* ─── RENDER ─── */
 function rRes(list,u){
+  const favs=getFavs();
   const c=$('rl2');c.innerHTML='';sel.clear();
-  const bl=(u||'').replace(/\./g,'').length,totDot=mode==='dot'?Math.pow(2,bl-1)-1:0;
-  $('rl').textContent=list.length+' عنوان تم توليده';
-  updSel();$('rc').style.display='block';$('rph').style.display='none';$('si').value='';
-  list.forEach((e,i)=>c.appendChild(mkRow(e,i)));
+  const bl=(u&&u!=='batch')?u.replace(/\./g,'').length:2;
+  const totDot=mode==='dot'?Math.pow(2,bl-1)-1:0;
+  $('rl').textContent=list.length+' عنوان';
+  updSel();$('rc').style.display='block';$('rph').style.display='none';$('si').value='';$('fcount').textContent='';$('sortdd').value='orig';
+  list.forEach((e,i)=>c.appendChild(mkRow(e,i,favs)));
   const nd=$('dn');
   if(mode==='dot'&&totDot>50){nd.textContent='عرض ٥٠ من أصل '+totDot.toLocaleString('ar-EG')+' تنويع ممكن';nd.style.display='block';}
   else nd.style.display='none';
   showMobBar(true);
 }
 
-function mkRow(email,i){
+function mkRow(email,i,favs){
+  const isFav=(favs||getFavs()).includes(email);
   const row=document.createElement('div');
-  row.className='rrow fadein';row.style.animationDelay=Math.min(i*.025,.38)+'s';row.dataset.e=email;
+  row.className='rrow fadein'+(isFav?' fav-row':'');
+  row.style.animationDelay=Math.min(i*.022,.38)+'s';row.dataset.e=email;
 
   const cb=document.createElement('div');cb.className='cb';cb.onclick=()=>togSel(email,cb,row);
+
   const sp=document.createElement('span');
   sp.dir='ltr';sp.style.cssText='font-family:"Courier New",monospace;font-size:12.5px;color:rgba(255,255,255,.8);word-break:break-all;flex:1;text-align:left;min-width:0;';
   sp.textContent=email;
+
+  const star=document.createElement('button');
+  star.className='star'+(isFav?' on':'');star.textContent='★';star.title='أضف للمفضلة';
+  star.onclick=()=>{const on=togFav(email);star.classList.toggle('on',on);row.classList.toggle('fav-row',on);star.classList.add('star-pop');setTimeout(()=>star.classList.remove('star-pop'),350);bump('f');};
 
   const bd=document.createElement('div');bd.style.cssText='display:flex;gap:4px;flex-shrink:0;';
   const cp=document.createElement('button');cp.className='cbtn';cp.textContent='نسخ';cp.onclick=()=>cpOne(cp,email);
@@ -446,7 +771,7 @@ function mkRow(email,i){
   const qr=document.createElement('button');qr.className='cbtn';qr.style.padding='4px 8px';
   qr.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3m0 4h4m-4-4v4"/></svg>';
   qr.onclick=()=>showQR(email);
-  bd.append(cp,fl,qr);row.append(cb,sp,bd);
+  bd.append(cp,fl,qr);row.append(cb,sp,star,bd);
 
   let tx=0;
   row.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
@@ -454,7 +779,7 @@ function mkRow(email,i){
   return row;
 }
 
-/* SELECTION */
+/* ─── SELECTION ─── */
 function togSel(e,cb,row){sel.has(e)?sel.delete(e):sel.add(e);cb.classList.toggle('on',sel.has(e));row.classList.toggle('sel',sel.has(e));updSel();}
 function selAll(){
   const vis=[...document.querySelectorAll('.rrow')].filter(r=>r.style.display!=='none').map(r=>r.dataset.e);
@@ -465,42 +790,84 @@ function selAll(){
 }
 function updSel(){const sl=$('sl'),csb=$('csb');if(sel.size>0){sl.textContent=sel.size+' محدد';sl.style.display='block';csb.style.display='inline-flex';}else{sl.style.display='none';csb.style.display='none';}}
 
-/* SEARCH */
-function filt(){const q=$('si').value.trim().toLowerCase();document.querySelectorAll('.rrow').forEach(r=>{r.style.display=(!q||r.dataset.e.includes(q))?'flex':'none';});}
+/* ─── SEARCH ─── */
+function filt(){
+  const q=$('si').value.trim().toLowerCase();
+  let count=0;
+  document.querySelectorAll('.rrow').forEach(r=>{const m=!q||r.dataset.e.includes(q);r.style.display=m?'flex':'none';if(m)count++;});
+  $('fcount').textContent=q?count+' نتيجة':'';
+}
 
-function clr(){all=[];sel.clear();$('rc').style.display='none';$('rph').style.display='block';$('rl2').innerHTML='';showMobBar(false);}
-
-/* MOBILE BAR */
+function clr(){all=[];origAll=[];sel.clear();$('rc').style.display='none';$('rph').style.display='block';$('rl2').innerHTML='';showMobBar(false);}
 function showMobBar(on){if(window.innerWidth<768)$('mob-bar').style.display=on?'flex':'none';}
 
-/* COPY */
+/* ─── COPY ─── */
 function cpOne(btn,txt){
   navigator.clipboard.writeText(txt).then(()=>{
-    const was=btn.innerHTML;btn.textContent='✓';btn.classList.add('ok');bump('c');
-    setTimeout(()=>{btn.innerHTML=was;btn.classList.remove('ok');},1800);
+    if(btn){const was=btn.innerHTML;btn.textContent='✓';btn.classList.add('ok');bump('c');setTimeout(()=>{btn.innerHTML=was;btn.classList.remove('ok');},1800);}
+    else{toast('تم النسخ ✓');}
   }).catch(()=>toast('تعذّر النسخ','err'));
 }
-function cpAll(){if(!all.length)return;navigator.clipboard.writeText(all.join('\n')).then(()=>{toast('تم نسخ جميع العناوين ('+all.length+') ✓');bump('c',all.length);});}
-function copySel(){if(!sel.size)return;navigator.clipboard.writeText([...sel].join('\n')).then(()=>{toast('تم نسخ '+sel.size+' عنوان ✓');bump('c',sel.size);});}
+function cpAll(){
+  if(!all.length)return;
+  navigator.clipboard.writeText(all.join('\n')).then(()=>{
+    toast('تم نسخ '+all.length+' عنوان ✓');bump('c',all.length);confetti();
+  });
+}
+function copySel(){
+  if(!sel.size)return;
+  navigator.clipboard.writeText([...sel].join('\n')).then(()=>{toast('تم نسخ '+sel.size+' عنوان ✓');bump('c',sel.size);});
+}
 
-/* EXPORT */
+/* ─── EXPORT ─── */
 function dl(content,name,mime){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:mime}));a.download=name;a.click();URL.revokeObjectURL(a.href);}
 function exTXT(){if(!all.length)return;dl(all.join('\n'),'715-aliases.txt','text/plain');toast('تم تحميل TXT ✓');}
-function exCSV(){if(!all.length)return;const u=uname();dl('﻿'+'العنوان البديل,الاسم الأصلي\n'+all.map(e=>e+','+u).join('\n'),'715-aliases.csv','text/csv');toast('تم تحميل CSV ✓');}
+function exCSV(){if(!all.length)return;const u=uname();dl('﻿'+'العنوان البديل,الاسم الأصلي\n'+all.map(e=>e+','+u).join('\n'),'715-aliases.csv','text/csv;charset=utf-8');toast('تم تحميل CSV ✓');}
+function exJSON(){if(!all.length)return;const obj={generated:new Date().toISOString(),count:all.length,domain:dom,aliases:all};dl(JSON.stringify(obj,null,2),'715-aliases.json','application/json');toast('تم تحميل JSON ✓');}
+
+function buildXML(){
+  const label='Gmail Aliases - 715';
+  const entries=all.map(a=>`  <entry>\n    <category term='filter'></category>\n    <apps:property name='to' value='${a}'/>\n    <apps:property name='label' value='${label}'/>\n    <apps:property name='shouldArchive' value='false'/>\n  </entry>`).join('\n');
+  return`<?xml version='1.0' encoding='UTF-8'?>\n<feed xmlns='http://www.w3.org/2005/Atom' xmlns:apps='http://schemas.google.com/apps/2006'>\n  <title>Mail Filters</title>\n${entries}\n</feed>`;
+}
+function exXML(){if(!all.length){toast('ولّد عناوين أولاً','info');return;}$('xmltxt').value=buildXML();$('xm').style.display='flex';}
+function dlXML(){dl(buildXML(),'715-gmail-filter.xml','text/xml');toast('تم تحميل XML ✓');}
+function cpXML(){navigator.clipboard.writeText($('xmltxt').value).then(()=>{toast('تم نسخ XML ✓');const b=$('xcpbtn');b.textContent='✓ تم النسخ';setTimeout(()=>b.textContent='نسخ XML',1800);});}
+
 async function shareR(){
   if(!all.length)return;
-  const txt='عناوين Gmail البديلة:\n'+all.slice(0,10).join('\n')+(all.length>10?'\n…والمزيد':'');
+  const txt='عناوين Gmail البديلة — 715 ميل:\n'+all.slice(0,10).join('\n')+(all.length>10?'\n…والمزيد':'');
   if(navigator.share){try{await navigator.share({title:'715 ميل',text:txt});}catch(e){}}
   else{navigator.clipboard.writeText(txt).then(()=>toast('تم نسخ القائمة للمشاركة ✓'));}
 }
 
-/* QR */
+/* ─── QR ─── */
 function showQR(email){$('qe').textContent=email;$('qc').innerHTML='';$('qm').style.display='flex';new QRCode($('qc'),{text:'mailto:'+email,width:156,height:156,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M});}
-function closeQR(e){if(e&&e.target!==e.currentTarget)return;$('qm').style.display='none';$('qc').innerHTML='';}
 
-/* HISTORY */
+/* ─── MODAL ─── */
+function closeModal(id,e){if(e&&e.target!==e.currentTarget)return;$(id).style.display='none';if(id==='qm')$('qc').innerHTML='';}
+
+/* ─── FAVORITES ─── */
+function getFavs(){try{return JSON.parse(localStorage.getItem('715f')||'[]');}catch{return[];}}
+function togFav(email){let f=getFavs();const on=!f.includes(email);if(on)f.unshift(email);else f=f.filter(x=>x!==email);localStorage.setItem('715f',JSON.stringify(f));return on;}
+function clearFavs(){localStorage.removeItem('715f');rFavs();bump('f');toast('تم مسح المفضلات','info');}
+function rFavs(){
+  const f=getFavs(),list=$('fl'),emp=$('fe'),acts=$('fl-actions');
+  list.innerHTML='';
+  if(!f.length){list.style.display='none';emp.style.display='block';acts.style.display='none';return;}
+  list.style.display='flex';emp.style.display='none';acts.style.display='block';
+  f.forEach(email=>{
+    const el=document.createElement('div');el.className='hitem fadein';
+    el.innerHTML=`<span dir="ltr" style="font-family:'Courier New',monospace;font-size:12.5px;color:rgba(255,255,255,.65);word-break:break-all;flex:1;">★ ${email}</span><div style="display:flex;gap:4px;flex-shrink:0;"><button class="cbtn" onclick="cpOne(null,'${email}');toast('تم النسخ ✓')">نسخ</button><button class="cbtn" onclick="rmFav('${email}',this.closest('.hitem'))">✕</button></div>`;
+    list.appendChild(el);
+  });
+  an($('sf'),f.length);
+}
+function rmFav(email,el){togFav(email);el.remove();const f=getFavs();if(!f.length)rFavs();bump('f');}
+
+/* ─── HISTORY ─── */
 function getH(){try{return JSON.parse(localStorage.getItem('715h')||'[]');}catch{return[];}}
-function saveH(u){let h=getH().filter(x=>x!==u);h.unshift(u);h=h.slice(0,8);localStorage.setItem('715h',JSON.stringify(h));}
+function saveH(u){if(!u||u==='batch')return;let h=getH().filter(x=>x!==u);h.unshift(u);h=h.slice(0,8);localStorage.setItem('715h',JSON.stringify(h));}
 function rHist(){
   const h=getH(),list=$('hl'),emp=$('he');
   list.innerHTML='';
@@ -508,14 +875,15 @@ function rHist(){
   list.style.display='flex';emp.style.display='none';
   h.forEach(u=>{
     const el=document.createElement('div');el.className='hitem fadein';
-    el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="2" style="opacity:.6"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span dir="ltr" style="font-family:'Courier New',monospace;font-size:13px;color:rgba(255,255,255,.65);">${u}${dom}</span></div><button class="cbtn" onclick="ldH('${u}')">استخدام</button>`;
+    el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;min-width:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="2" style="opacity:.55;flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span dir="ltr" style="font-family:'Courier New',monospace;font-size:12.5px;color:rgba(255,255,255,.6);word-break:break-all;">${u}${dom}</span></div><button class="cbtn" onclick="ldH('${u}')">استخدام</button>`;
     list.appendChild(el);
   });
 }
 function ldH(u){$('inp').value=u;onInp();swTab('plus');gen();}
 
-/* INIT */
+/* ─── INIT ─── */
 $('inp').focus();
+an($('sf'),getFavs().length);
 </script>
 </body>
 </html>
