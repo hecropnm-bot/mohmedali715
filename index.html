@@ -1,492 +1,521 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>715  — مولّد عناوين Gmail</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>715 ميل — مولّد عناوين Gmail</title>
+<meta name="description" content="أنشئ عناوين Gmail بديلة حقيقية وغير محدودة"/>
+<meta name="theme-color" content="#050510"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--acc:#7ba4ff;--acc2:#a78bfa;--glow:rgba(123,164,255,.18);--glass:rgba(255,255,255,.04);--border:rgba(255,255,255,.10)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{min-height:100vh;font-family:'Cairo',sans-serif;background:#050510;color:#fff;overflow-x:hidden}
+button,input{font-family:'Cairo',sans-serif}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@1,8..60,400&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
+@keyframes aurora{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.aurora{position:fixed;inset:0;z-index:0;background:linear-gradient(-45deg,#050510,#12052a,#051522,#020d0a);background-size:400% 400%;animation:aurora 18s ease infinite}
+.vbg{position:fixed;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;opacity:.4}
+.ovl{position:fixed;inset:0;z-index:2;background:linear-gradient(to bottom,rgba(5,5,16,.35) 0%,rgba(5,5,16,.05) 50%,rgba(5,5,16,.5) 100%)}
+.wrap{position:relative;z-index:10;min-height:100vh;padding:0 16px 80px}
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; font-family: 'Cairo', sans-serif; background: #000; color: white; }
-    button, input { font-family: 'Cairo', sans-serif; }
+.lg{background:var(--glass);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);position:relative;overflow:hidden}
+.lg::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.35) 0%,rgba(255,255,255,.08) 45%,transparent 55%,rgba(255,255,255,.12) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.lgs{background:rgba(8,8,24,.65);backdrop-filter:blur(48px) saturate(160%);-webkit-backdrop-filter:blur(48px) saturate(160%);position:relative;overflow:hidden}
+.lgs::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.3) 0%,rgba(255,255,255,.06) 45%,transparent 55%,rgba(255,255,255,.14) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 
-    /* ── Liquid Glass Light ──────────────────────── */
-    .lg {
-      background: rgba(255,255,255,0.01);
-      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-      border: none;
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.10);
-      position: relative; overflow: hidden;
-    }
-    .lg::before {
-      content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.4px;
-      background: linear-gradient(180deg,
-        rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
-        transparent 40%, transparent 60%,
-        rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-              mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
-    }
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.75)}}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 20px var(--glow)}50%{box-shadow:0 0 40px var(--glow),0 0 80px rgba(123,164,255,.07)}}
+@keyframes shimmer{to{background-position:-200% center}}
 
-    /* ── Liquid Glass Strong ─────────────────────── */
-    .lgs {
-      background: rgba(255,255,255,0.01);
-      backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px);
-      border: none;
-      box-shadow: 4px 4px 4px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.15);
-      position: relative; overflow: hidden;
-    }
-    .lgs::before {
-      content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.4px;
-      background: linear-gradient(180deg,
-        rgba(255,255,255,0.50) 0%, rgba(255,255,255,0.20) 20%,
-        transparent 40%, transparent 60%,
-        rgba(255,255,255,0.20) 80%, rgba(255,255,255,0.50) 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-              mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
-    }
+.fadein{animation:fadein .2s ease both}
+.slideup{animation:slideup .28s ease both}
+.spin-a{animation:spin .7s linear infinite}
+.pulse-a{animation:pulse 2s ease-in-out infinite}
 
-    /* ── Animations ──────────────────────────────── */
-    @keyframes fadein { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes blink  { 0%,100%{opacity:1} 50%{opacity:0.15} }
+.field{background:rgba(255,255,255,.055);color:#fff;outline:none;border:none;transition:background .15s,box-shadow .15s}
+.field::placeholder{color:rgba(255,255,255,.2)}
+.field:focus{background:rgba(255,255,255,.09);box-shadow:0 0 0 2px rgba(123,164,255,.3),inset 0 1px 0 rgba(255,255,255,.08)}
 
-    .fadein { animation: fadein 0.22s ease both; }
-    .blink  { animation: blink 2s ease-in-out infinite; }
+.tab{color:rgba(255,255,255,.3);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;padding:10px 2px;font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;transition:all .15s;white-space:nowrap}
+.tab.on{color:#fff;border-bottom-color:var(--acc)}
+.tab:hover:not(.on){color:rgba(255,255,255,.6)}
 
-    /* ── Input ───────────────────────────────────── */
-    .field {
-      background: rgba(255,255,255,0.05);
-      color: white; border: none; outline: none;
-      transition: box-shadow 0.18s;
-    }
-    .field::placeholder { color: rgba(255,255,255,0.22); }
-    .field:focus { box-shadow: 0 0 0 2px rgba(255,255,255,0.18); }
+.chip{border-radius:9999px;padding:7px 14px;font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;color:rgba(255,255,255,.38);cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:all .14s}
+.chip:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.08)}
+.chip.on{color:#fff;background:rgba(123,164,255,.16);border-color:rgba(123,164,255,.4);box-shadow:0 0 14px rgba(123,164,255,.14)}
 
-    /* ── Tab ─────────────────────────────────────── */
-    .tab {
-      color: rgba(255,255,255,0.35); cursor: pointer;
-      transition: all 0.15s;
-      border-bottom: 2px solid transparent;
-      padding-bottom: 7px;
-      font-size: 13px; font-weight: 600;
-      background: none; border-left:none; border-right:none; border-top:none;
-    }
-    .tab.on { color: white; border-bottom-color: rgba(255,255,255,0.65); }
+.rrow{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);transition:all .12s}
+.rrow:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.1)}
+.rrow.sel{background:rgba(123,164,255,.08);border-color:rgba(123,164,255,.22)}
 
-    /* ── Chip ────────────────────────────────────── */
-    .chip {
-      border-radius: 9999px; padding: 0.35rem 1rem; font-size: 12px; font-weight: 600;
-      color: rgba(255,255,255,0.45); cursor: pointer; transition: all 0.14s;
-      background: none; border: none;
-    }
-    .chip.on, .chip:hover { color: white; }
+.cbtn{border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;font-family:'Cairo',sans-serif;color:rgba(255,255,255,.38);cursor:pointer;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);transition:all .12s;white-space:nowrap;flex-shrink:0}
+.cbtn:hover{background:rgba(255,255,255,.12);color:#fff}
+.cbtn.ok{background:rgba(60,200,100,.14);border-color:rgba(60,200,100,.32);color:rgba(80,220,120,.9)}
 
-    /* ── Result row ──────────────────────────────── */
-    .rrow {
-      display: flex; align-items: center; justify-content: space-between; gap: 10px;
-      padding: 11px 14px; border-radius: 10px;
-      background: rgba(255,255,255,0.03);
-      transition: background 0.12s;
-    }
-    .rrow:hover { background: rgba(255,255,255,0.065); }
+.cb{width:16px;height:16px;border-radius:4px;flex-shrink:0;cursor:pointer;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;transition:all .12s}
+.cb.on{background:rgba(123,164,255,.28);border-color:rgba(123,164,255,.6)}
 
-    /* ── Copy btn ────────────────────────────────── */
-    .cbtn {
-      border-radius: 7px; padding: 5px 12px; font-size: 11px; font-weight: 600;
-      color: rgba(255,255,255,0.45); cursor: pointer; background: rgba(255,255,255,0.06);
-      border: none; transition: all 0.13s; white-space: nowrap; flex-shrink: 0;
-    }
-    .cbtn:hover { background: rgba(255,255,255,0.12); color: white; }
-    .cbtn.ok    { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
+.gbtn{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(80,120,255,.28) 0%,rgba(150,80,255,.22) 100%);border:1px solid rgba(123,164,255,.32);transition:all .2s;animation:glow-pulse 3s ease-in-out infinite}
+.gbtn:hover{background:linear-gradient(135deg,rgba(80,120,255,.42) 0%,rgba(150,80,255,.36) 100%);border-color:rgba(123,164,255,.55);box-shadow:0 0 32px rgba(123,164,255,.22)}
+.gbtn:active{transform:scale(.98)}
+.gbtn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);transform:translateX(-100%);transition:transform .55s}
+.gbtn:hover::after{transform:translateX(100%)}
 
-    /* ── Hover scale ─────────────────────────────── */
-    .hs { transition: transform 0.14s; }
-    .hs:hover  { transform: scale(1.04); }
-    .hs:active { transform: scale(0.95); }
+.grad{background:linear-gradient(135deg,#fff 0%,rgba(180,200,255,.95) 50%,#fff 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
-    /* ── Scrollbar ───────────────────────────────── */
-    ::-webkit-scrollbar { width: 3px; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+.dom{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:700;font-family:'Courier New',monospace;cursor:pointer;transition:all .13s;border:1px solid transparent;color:rgba(255,255,255,.3);background:none}
+.dom.on{color:var(--acc);background:rgba(123,164,255,.12);border-color:rgba(123,164,255,.3)}
 
-    /* ── Steps ───────────────────────────────────── */
-    .step-num {
-      width: 22px; height: 22px; border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.45);
-      flex-shrink: 0;
-    }
-  </style>
+.snum{width:24px;height:24px;border-radius:50%;background:rgba(123,164,255,.14);border:1px solid rgba(123,164,255,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:rgba(123,164,255,.9);flex-shrink:0}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:9999px;font-size:10px;font-weight:700;letter-spacing:.08em;background:rgba(123,164,255,.1);border:1px solid rgba(123,164,255,.2);color:rgba(123,164,255,.85)}
+.key{display:inline-flex;align-items:center;justify-content:center;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.4);font-family:'Courier New',monospace}
+.sval{font-size:15px;font-weight:900;color:var(--acc);font-variant-numeric:tabular-nums}
+.hitem{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .12s}
+.hitem:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.11)}
+.titem{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;animation:slideup .2s ease;white-space:nowrap}
+.mback{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px}
+
+@media(min-width:1024px){.grid2{display:grid;grid-template-columns:420px 1fr;gap:16px;align-items:start;max-width:920px;margin:0 auto}}
+@media(max-width:1023px){.grid2{display:flex;flex-direction:column;max-width:600px;margin:0 auto;gap:12px}}
+@media(max-width:767px){.desktop{display:none!important}}
+@media(min-width:768px){.mobile{display:none!important}}
+
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+input[type=search]::-webkit-search-cancel-button{display:none}
+</style>
 </head>
 <body>
 
-<!-- ─── خلفية الفيديو ──────────────────────────────── -->
-<video autoplay loop muted playsinline
-  style="position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;">
+<div class="aurora"></div>
+<video class="vbg" autoplay loop muted playsinline>
   <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260315_073750_51473149-4350-4920-ae24-c8214286f323.mp4" type="video/mp4">
 </video>
+<div class="ovl"></div>
 
-<!-- ─── الصفحة ───────────────────────────────────────── -->
-<div style="position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 16px 48px;">
+<div class="wrap">
 
-  <!-- شريط التنقل -->
-  <nav style="width:100%;max-width:640px;display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;">
-    <div style="display:flex;align-items:center;gap:9px;">
-      <div class="lg" style="width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-        </svg>
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:50;padding:14px 0;margin-bottom:22px;">
+    <div style="max-width:920px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="lgs" style="width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div>
+          <div style="font-weight:900;font-size:1rem;letter-spacing:-.01em;line-height:1;">715 ميل</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.12em;text-transform:uppercase;margin-top:2px;" class="desktop">Gmail Alias Pro</div>
+        </div>
       </div>
-      <span style="font-weight:800;font-size:1.1rem;letter-spacing:-0.01em;">715 </span>
-    </div>
-    <div style="display:flex;align-items:center;gap:6px;">
-      <span class="blink" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.45);"></span>
-      <span style="font-size:11px;color:rgba(255,255,255,0.28);">عناوين Gmail الرسمية</span>
+      <div style="display:flex;align-items:center;gap:20px;" class="desktop">
+        <div style="text-align:center;"><div id="sg" class="sval">0</div><div style="font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.08em;">تم توليده</div></div>
+        <div style="width:1px;height:26px;background:rgba(255,255,255,.07)"></div>
+        <div style="text-align:center;"><div id="sc" class="sval">0</div><div style="font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.08em;">تم نسخه</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;">
+        <span class="pulse-a" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(80,220,120,.75);flex-shrink:0;"></span>
+        <span style="font-size:11px;color:rgba(255,255,255,.25);" class="desktop">مفعّل · رسمي من Google</span>
+      </div>
     </div>
   </nav>
 
-  <!-- البطاقة الرئيسية -->
-  <div class="lgs" style="width:100%;max-width:640px;border-radius:24px;padding:28px 28px 24px;">
+  <!-- HERO -->
+  <div style="text-align:center;margin-bottom:26px;padding:0 8px;">
+    <div class="badge" style="margin-bottom:12px;display:inline-flex;">✦ مولّد عناوين Gmail البديلة</div>
+    <h1 class="grad" style="font-weight:900;font-size:clamp(1.55rem,5vw,2.5rem);letter-spacing:-.02em;line-height:1.2;margin-bottom:10px;">عناوين @gmail.com<br>حقيقية وغير محدودة</h1>
+    <p style="font-size:13px;color:rgba(255,255,255,.35);max-width:400px;margin:0 auto;line-height:1.8;">استخدم ميزة الأسماء البديلة الرسمية من Google — كل رسالة تصل مباشرة إلى صندوقك</p>
+  </div>
 
-    <!-- العنوان -->
-    <div style="text-align:center;margin-bottom:24px;">
-      <h1 style="font-weight:800;font-size:1.65rem;letter-spacing:-0.01em;color:white;line-height:1.25;margin-bottom:8px;">
-        مولّد عناوين Gmail البديلة
-      </h1>
-      <p style="font-size:13px;color:rgba(255,255,255,0.38);line-height:1.75;max-width:420px;margin:0 auto;">
-        أنشئ عناوين <span style="color:rgba(255,255,255,0.68);font-weight:600;font-family:'Courier New',monospace;">@gmail.com</span> حقيقية وغير محدودة — كل عنوان يُحوّل رسائله مباشرةً إلى صندوقك
-      </p>
-    </div>
+  <!-- GRID -->
+  <div class="grid2">
 
-    <!-- حقل الإدخال -->
-    <div style="margin-bottom:18px;">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.28);margin-bottom:8px;">اسم المستخدم في Gmail</div>
-      <div class="lg" style="border-radius:13px;display:flex;overflow:hidden;flex-direction:row-reverse;">
-        <input id="inp" type="text" placeholder="مثال: mohmedali"
-          class="field"
-          autocomplete="off" spellcheck="false" dir="ltr"
-          style="flex:1;padding:13px 16px;font-size:14px;font-weight:600;border-radius:0;min-width:0;text-align:left;"
-          oninput="onInput()" onkeydown="if(event.key==='Enter')generate()" />
-        <div style="display:flex;align-items:center;padding:0 14px;background:rgba(255,255,255,0.06);border-right:1px solid rgba(255,255,255,0.08);flex-shrink:0;">
-          <span style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);font-family:'Courier New',monospace;">@gmail.com</span>
+    <!-- LEFT PANEL -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="lgs" style="border-radius:22px;padding:22px 20px;">
+
+        <!-- Username -->
+        <div style="margin-bottom:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <label style="font-size:11px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.1em;">اسم المستخدم</label>
+            <span id="cc" style="font-size:10px;color:rgba(255,255,255,.18);font-family:'Courier New',monospace;"></span>
+          </div>
+          <div class="lg" style="border-radius:12px;display:flex;overflow:hidden;">
+            <input id="inp" type="text" placeholder="ahmed123" class="field" autocomplete="off" spellcheck="false" dir="ltr" maxlength="30"
+              style="flex:1;padding:13px 14px;font-size:15px;font-weight:700;border-radius:0;min-width:0;text-align:left;"
+              oninput="onInp()" onkeydown="hKey(event)"/>
+            <div style="display:flex;align-items:center;padding:0 12px;background:rgba(255,255,255,.05);border-right:1px solid rgba(255,255,255,.07);flex-shrink:0;">
+              <span id="dd" style="font-size:11.5px;font-weight:700;color:var(--acc);font-family:'Courier New',monospace;white-space:nowrap;">@gmail.com</span>
+            </div>
+          </div>
+          <div id="err" style="display:none;font-size:12px;color:rgba(255,110,90,.85);margin-top:6px;padding:0 4px;"></div>
         </div>
-      </div>
-      <div id="inp-err" style="display:none;font-size:12px;color:rgba(255,120,120,0.75);margin-top:6px;padding:0 4px;"></div>
-    </div>
 
-    <!-- التبويبات -->
-    <div style="display:flex;gap:22px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:18px;">
-      <button id="tab-plus" class="tab on" onclick="switchTab('plus')">✦ عناوين ذكية (+)</button>
-      <button id="tab-dot"  class="tab"    onclick="switchTab('dot')">⬤ تنويعات النقطة (.)</button>
-    </div>
+        <!-- Domain -->
+        <div style="margin-bottom:18px;">
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">النطاق</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="dom lg on" data-d="@gmail.com" onclick="setDom(this)" style="border-radius:8px;">@gmail.com</button>
+            <button class="dom lg" data-d="@googlemail.com" onclick="setDom(this)" style="border-radius:8px;">@googlemail.com</button>
+          </div>
+        </div>
 
-    <!-- وضع العناوين الذكية -->
-    <div id="mode-plus">
-      <!-- الاختيارات السريعة -->
-      <div style="margin-bottom:16px;">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.28);margin-bottom:10px;">اختيارات سريعة</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;" id="chips"></div>
-      </div>
-      <!-- وسم مخصص -->
-      <div>
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.28);margin-bottom:8px;">وسم مخصص</div>
-        <input id="tag-inp" type="text" placeholder="مثال: عمل2025، تطبيقي، عروض…"
-          class="field lg"
-          autocomplete="off" spellcheck="false"
-          style="width:100%;border-radius:10px;padding:11px 14px;font-size:13px;"
-          oninput="onTagInput()" onkeydown="if(event.key==='Enter')generate()" />
-      </div>
-    </div>
+        <!-- Tabs -->
+        <div style="display:flex;gap:18px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:16px;overflow-x:auto;">
+          <button id="t-plus" class="tab on" onclick="swTab('plus')">✦ عناوين ذكية</button>
+          <button id="t-dot" class="tab" onclick="swTab('dot')">⬤ نقطة</button>
+          <button id="t-history" class="tab" onclick="swTab('history')">🕐 السجل</button>
+        </div>
 
-    <!-- وضع النقطة -->
-    <div id="mode-dot" style="display:none;">
-      <div class="lg" style="border-radius:12px;padding:14px 16px;font-size:13px;color:rgba(255,255,255,0.45);line-height:1.85;">
-        Gmail يتجاهل النقاط في أسماء المستخدمين تماماً — أي أن
-        <span dir="ltr" style="color:rgba(255,255,255,0.72);font-family:'Courier New',monospace;">a.hmed@gmail.com</span>
-        و
-        <span dir="ltr" style="color:rgba(255,255,255,0.72);font-family:'Courier New',monospace;">ahmed@gmail.com</span>
-        نفس الصندوق بالضبط. كل هذه العناوين حقيقية وتعمل بالكامل.
-        <span id="dot-count" style="display:block;margin-top:6px;color:rgba(255,255,255,0.5);font-weight:600;font-size:12px;"></span>
-      </div>
-    </div>
+        <!-- Plus -->
+        <div id="m-plus">
+          <div style="margin-bottom:14px;">
+            <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.1em;margin-bottom:9px;">اختيارات سريعة</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;" id="chips"></div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">وسم مخصص</div>
+            <input id="ti" type="text" placeholder="مثال: عمل2025، تطبيقي، عروض…" class="field lg" autocomplete="off"
+              style="width:100%;border-radius:10px;padding:11px 14px;font-size:13px;"
+              oninput="onTi()" onkeydown="if(event.key==='Enter')gen()"/>
+          </div>
+        </div>
 
-    <!-- زر التوليد -->
-    <button id="gen-btn" onclick="generate()" class="lgs hs"
-      style="width:100%;margin-top:18px;border-radius:13px;padding:14px;font-size:14px;font-weight:700;color:white;border:none;cursor:pointer;background:none;letter-spacing:0.02em;">
-      توليد عناوين Gmail ←
-    </button>
+        <!-- Dot -->
+        <div id="m-dot" style="display:none;">
+          <div class="lg" style="border-radius:12px;padding:14px;font-size:13px;color:rgba(255,255,255,.4);line-height:1.85;">
+            Google يتجاهل النقاط في اسم المستخدم — لذا
+            <span dir="ltr" style="color:var(--acc);font-family:'Courier New',monospace;font-size:12px;">a.h.med</span>
+            و <span dir="ltr" style="color:var(--acc);font-family:'Courier New',monospace;font-size:12px;">ahmed</span>
+            صندوق واحد بالضبط.
+            <div id="dc" style="margin-top:8px;color:rgba(255,255,255,.55);font-weight:700;font-size:12px;"></div>
+          </div>
+        </div>
 
-    <!-- النتائج -->
-    <div id="results" style="display:none;margin-top:22px;">
+        <!-- History -->
+        <div id="m-history" style="display:none;">
+          <div id="hl" style="display:flex;flex-direction:column;gap:6px;"></div>
+          <div id="he" style="text-align:center;padding:24px 0;font-size:13px;color:rgba(255,255,255,.22);">لا يوجد سجل بعد</div>
+        </div>
 
-      <!-- رأس النتائج -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <span id="res-label" style="font-size:11px;color:rgba(255,255,255,0.32);font-weight:600;text-transform:uppercase;letter-spacing:0.1em;"></span>
-        <button onclick="copyAll()" class="lg hs"
-          style="border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.45);border:none;cursor:pointer;background:none;transition:color 0.12s;"
-          onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">
-          نسخ الكل
+        <!-- Gen btn -->
+        <button id="gb" onclick="gen()" class="gbtn lgs"
+          style="width:100%;margin-top:18px;border-radius:13px;padding:14px;font-size:14px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;border:none;">
+          <span id="gi">←</span>
+          <span id="gt">توليد عناوين Gmail</span>
         </button>
       </div>
 
-      <!-- قائمة العناوين -->
-      <div id="res-list" style="display:flex;flex-direction:column;gap:6px;max-height:320px;overflow-y:auto;padding-left:2px;"></div>
+      <!-- Shortcuts (desktop) -->
+      <div class="lgs desktop" style="border-radius:18px;padding:16px 18px;">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.22);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;">اختصارات لوحة المفاتيح</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;color:rgba(255,255,255,.32);">توليد</span><span class="key">Enter</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;color:rgba(255,255,255,.32);">نسخ الكل</span><div style="display:flex;gap:4px;"><span class="key">Ctrl</span><span class="key">K</span></div></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;color:rgba(255,255,255,.32);">تحديد الكل</span><div style="display:flex;gap:4px;"><span class="key">Ctrl</span><span class="key">A</span></div></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;color:rgba(255,255,255,.32);">إغلاق</span><span class="key">Esc</span></div>
+        </div>
+      </div>
+    </div>
 
-      <!-- ملاحظة التقليص -->
-      <div id="dot-note" style="display:none;text-align:center;font-size:11px;color:rgba(255,255,255,0.2);margin-top:10px;"></div>
+    <!-- RIGHT PANEL -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
 
-      <!-- كيفية الاستخدام -->
-      <div class="lg" style="border-radius:14px;padding:16px;margin-top:18px;">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.28);margin-bottom:12px;">كيفية الاستخدام</div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="display:flex;align-items:flex-start;gap:10px;">
-            <div class="step-num">١</div>
-            <div style="font-size:12.5px;color:rgba(255,255,255,0.48);line-height:1.65;">أعطِ العنوان البديل لأي موقع أو خدمة أو تطبيق</div>
+      <!-- Placeholder -->
+      <div id="rph" class="lgs" style="border-radius:22px;padding:48px 20px;text-align:center;">
+        <div style="width:58px;height:58px;border-radius:50%;background:rgba(123,164,255,.07);border:1px solid rgba(123,164,255,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="rgba(123,164,255,.5)" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:rgba(255,255,255,.28);margin-bottom:6px;">لا توجد نتائج بعد</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.16);line-height:1.8;">أدخل اسم المستخدم واضغط توليد</div>
+      </div>
+
+      <!-- Results -->
+      <div id="rc" class="lgs" style="border-radius:22px;padding:20px;display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+          <div>
+            <div id="rl" style="font-size:14px;font-weight:800;color:#fff;"></div>
+            <div id="sl" style="font-size:11px;color:rgba(255,255,255,.28);margin-top:2px;display:none;"></div>
           </div>
-          <div style="display:flex;align-items:flex-start;gap:10px;">
-            <div class="step-num">٢</div>
-            <div style="font-size:12.5px;color:rgba(255,255,255,0.48);line-height:1.65;">ستصل الرسائل تلقائياً إلى صندوق Gmail الأصلي</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button onclick="selAll()" class="cbtn">تحديد الكل</button>
+            <button onclick="copySel()" id="csb" class="cbtn" style="display:none;">نسخ المحدد</button>
+            <button onclick="cpAll()" class="cbtn">نسخ الكل</button>
           </div>
-          <div style="display:flex;align-items:flex-start;gap:10px;">
-            <div class="step-num">٣</div>
-            <div style="font-size:12.5px;color:rgba(255,255,255,0.48);line-height:1.65;">
-              في Gmail → الإعدادات → الفلاتر ← انسخ زر <span dir="ltr" style="color:rgba(255,255,255,0.65);font-family:'Courier New',monospace;font-size:11px;">الفلتر</span> لفرز الرسائل أو أرشفتها تلقائياً
-            </div>
-          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="lg" style="border-radius:10px;display:flex;align-items:center;gap:8px;padding:9px 12px;margin-bottom:12px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="2.5" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="si" type="search" placeholder="ابحث في العناوين…" class="field"
+            style="flex:1;font-size:13px;background:none;border-radius:0;padding:0;" oninput="filt()"/>
+        </div>
+
+        <!-- List -->
+        <div id="rl2" style="display:flex;flex-direction:column;gap:5px;max-height:360px;overflow-y:auto;padding-left:2px;"></div>
+        <div id="dn" style="display:none;text-align:center;font-size:11px;color:rgba(255,255,255,.18);margin-top:8px;"></div>
+
+        <!-- Export -->
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);">
+          <button onclick="exTXT()" class="cbtn lg" style="flex:1;border-radius:9px;padding:8px;font-size:12px;text-align:center;">⬇ TXT</button>
+          <button onclick="exCSV()" class="cbtn lg" style="flex:1;border-radius:9px;padding:8px;font-size:12px;text-align:center;">⬇ CSV</button>
+          <button onclick="shareR()" class="cbtn lg" style="flex:1;border-radius:9px;padding:8px;font-size:12px;text-align:center;">↗ مشاركة</button>
         </div>
       </div>
 
+      <!-- How to use -->
+      <div class="lgs" style="border-radius:22px;padding:20px;">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.22);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;">كيفية الاستخدام</div>
+        <div style="display:flex;flex-direction:column;gap:13px;">
+          <div style="display:flex;align-items:flex-start;gap:12px;"><div class="snum">١</div><div><div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:3px;">أعطِ العنوان البديل للمواقع</div><div style="font-size:12px;color:rgba(255,255,255,.32);line-height:1.7;">استخدمه عند التسجيل في أي موقع أو خدمة</div></div></div>
+          <div style="display:flex;align-items:flex-start;gap:12px;"><div class="snum">٢</div><div><div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:3px;">الرسائل تصل تلقائياً لصندوقك</div><div style="font-size:12px;color:rgba(255,255,255,.32);line-height:1.7;">لا حاجة لحساب Gmail جديد</div></div></div>
+          <div style="display:flex;align-items:flex-start;gap:12px;"><div class="snum">٣</div><div><div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:3px;">نظّم بريدك بفلاتر Gmail</div><div style="font-size:12px;color:rgba(255,255,255,.32);line-height:1.7;">انسخ زر "فلتر" وأنشئ قاعدة في Gmail لفرز رسائل هذا العنوان</div></div></div>
+        </div>
+      </div>
+
+      <div style="text-align:center;font-size:11px;color:rgba(255,255,255,.14);line-height:2;">ميزة رسمية من Google · لا خوادم · لا بيانات محفوظة<br>715 ميل © 2026</div>
     </div>
   </div>
-
-  <!-- تذييل الصفحة -->
-  <div style="margin-top:20px;font-size:11.5px;color:rgba(255,255,255,0.16);text-align:center;line-height:1.85;">
-    جميع العناوين ميزة رسمية من Google · لا تسجيل · لا خوادم خارجية<br>
-    الرسائل تصل مباشرةً إلى صندوق Gmail الحقيقي
-  </div>
-
 </div>
 
-<!-- ─── إشعار النسخ ────────────────────────────────── -->
-<div id="toast" style="position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%);z-index:70;pointer-events:none;opacity:0;transition:opacity 0.22s ease;">
-  <div class="lgs" style="border-radius:9999px;padding:0.6rem 1.5rem;white-space:nowrap;">
-    <span id="toast-txt" style="font-size:13px;color:white;font-weight:600;"></span>
+<!-- Mobile bottom bar -->
+<div id="mob-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:50;padding:10px 16px 22px;background:linear-gradient(to top,rgba(5,5,16,.97) 0%,transparent 100%);display:none;gap:8px;">
+  <button onclick="exTXT()" class="cbtn lg" style="flex:1;border-radius:10px;padding:10px;font-size:12px;text-align:center;">⬇ TXT</button>
+  <button onclick="cpAll()" class="cbtn lg" style="flex:1;border-radius:10px;padding:10px;font-size:12px;text-align:center;">نسخ الكل</button>
+  <button onclick="shareR()" class="cbtn lg" style="flex:1;border-radius:10px;padding:10px;font-size:12px;text-align:center;">↗ مشاركة</button>
+</div>
+
+<!-- QR Modal -->
+<div id="qm" class="mback" style="display:none;" onclick="closeQR(event)">
+  <div class="lgs slideup" style="border-radius:22px;padding:26px;text-align:center;max-width:280px;width:100%;">
+    <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:4px;">رمز QR للعنوان</div>
+    <div id="qe" dir="ltr" style="font-size:11px;color:var(--acc);font-family:'Courier New',monospace;margin-bottom:16px;word-break:break-all;"></div>
+    <div id="qc" style="display:inline-block;background:#fff;border-radius:12px;padding:12px;"></div>
+    <div style="margin-top:16px;"><button onclick="closeQR()" class="cbtn lg" style="border-radius:9px;padding:8px 24px;font-size:13px;">إغلاق</button></div>
   </div>
 </div>
+
+<!-- Toast -->
+<div id="ts" style="position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;"></div>
 
 <script>
-/* ── الحالة ──────────────────────────────────────── */
-let mode        = 'plus';
-let activePreset = null;
-let allResults   = [];
+/* STATE */
+let mode='plus',dom='@gmail.com',preset=null,all=[],sel=new Set(),sGen=0,sCp=0;
+const $=id=>document.getElementById(id);
 
-const PRESETS = [
-  { label: '📬 نشرات',    tag: 'newsletter' },
-  { label: '🛒 تسوق',     tag: 'shopping'   },
-  { label: '👥 تواصل',    tag: 'social'      },
-  { label: '💼 عمل',      tag: 'work'        },
-  { label: '🔬 تجربة',    tag: 'trial'       },
-  { label: '💰 مالية',    tag: 'finance'     },
-  { label: '🎮 ألعاب',    tag: 'gaming'      },
-  { label: '📦 توصيل',    tag: 'delivery'    },
+const PRESETS=[
+  {l:'📬 نشرات',t:'newsletter'},{l:'🛒 تسوق',t:'shopping'},
+  {l:'👥 تواصل',t:'social'},{l:'💼 عمل',t:'work'},
+  {l:'🔬 تجربة',t:'trial'},{l:'💰 مالية',t:'finance'},
+  {l:'🎮 ألعاب',t:'gaming'},{l:'📦 توصيل',t:'delivery'},
 ];
 
-const $ = id => document.getElementById(id);
-let toastTm;
+/* CHIPS */
+(()=>{const w=$('chips');PRESETS.forEach(p=>{const b=document.createElement('button');b.className='chip lg';b.dataset.t=p.t;b.textContent=p.l;b.onclick=()=>togP(p.t,b);w.appendChild(b);});})();
 
-/* ── إشعار ────────────────────────────────────────── */
-function toast(msg) {
-  $('toast-txt').textContent = msg;
-  $('toast').style.opacity = '1';
-  clearTimeout(toastTm);
-  toastTm = setTimeout(() => { $('toast').style.opacity = '0'; }, 2800);
+/* TOAST */
+function toast(msg,type='ok'){
+  const bg={ok:'rgba(10,35,20,.96)',err:'rgba(40,10,10,.96)',info:'rgba(8,16,40,.96)'};
+  const ic={ok:'✓',err:'✕',info:'ℹ'};
+  const el=document.createElement('div');
+  el.className='titem lgs';
+  el.style.cssText=`background:${bg[type]};border:1px solid rgba(255,255,255,.1);`;
+  el.innerHTML=`<span>${ic[type]}</span><span>${msg}</span>`;
+  $('ts').appendChild(el);
+  setTimeout(()=>{el.style.cssText+=';opacity:0;transition:opacity .3s;';setTimeout(()=>el.remove(),320);},2600);
 }
 
-/* ── بناء الاختيارات السريعة ─────────────────────── */
-(function buildChips() {
-  const wrap = $('chips');
-  PRESETS.forEach(p => {
-    const btn = document.createElement('button');
-    btn.className = 'chip lg';
-    btn.dataset.tag = p.tag;
-    btn.textContent = p.label;
-    btn.onclick = () => togglePreset(p.tag, btn);
-    wrap.appendChild(btn);
-  });
-})();
+/* STATS */
+function bump(k,v=1){if(k==='g'){sGen+=v;an($('sg'),sGen);}else{sCp+=v;an($('sc'),sCp);}}
+function an(el,t){const s=parseInt(el.textContent)||0,d=350,t0=performance.now();(function f(n){const p=Math.min((n-t0)/d,1);el.textContent=Math.round(s+(t-s)*p);if(p<1)requestAnimationFrame(f);})(t0);}
 
-function togglePreset(tag, btn) {
-  if (activePreset === tag) {
-    activePreset = null;
-    btn.classList.remove('on');
-  } else {
-    document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
-    activePreset = tag;
-    btn.classList.add('on');
-    $('tag-inp').value = '';
-  }
-  clearResults();
+/* DOMAIN */
+function setDom(btn){dom=btn.dataset.d;document.querySelectorAll('.dom').forEach(b=>b.classList.remove('on'));btn.classList.add('on');$('dd').textContent=dom;clr();}
+
+/* PRESET */
+function togP(t,btn){if(preset===t){preset=null;btn.classList.remove('on');}else{document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));preset=t;btn.classList.add('on');$('ti').value='';}clr();}
+
+/* TABS */
+function swTab(t){
+  mode=t;
+  ['plus','dot','history'].forEach(id=>{$('t-'+id).classList.toggle('on',id===t);$('m-'+id).style.display=id===t?'block':'none';});
+  clr();
+  if(t==='dot')upDot();
+  if(t==='history')rHist();
 }
 
-/* ── تبديل التبويب ───────────────────────────────── */
-function switchTab(t) {
-  mode = t;
-  $('tab-plus').classList.toggle('on', t === 'plus');
-  $('tab-dot').classList.toggle('on',  t === 'dot');
-  $('mode-plus').style.display = t === 'plus' ? 'block' : 'none';
-  $('mode-dot').style.display  = t === 'dot'  ? 'block' : 'none';
-  clearResults();
-  updateDotCount();
+/* INPUT */
+function hKey(e){
+  if(e.key==='Enter')gen();
+  if(e.ctrlKey&&e.key==='k'){e.preventDefault();cpAll();}
+  if(e.ctrlKey&&e.key==='a'&&all.length){e.preventDefault();selAll();}
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeQR();
+  if(e.ctrlKey&&e.key==='k'&&!e.target.matches('input')){e.preventDefault();cpAll();}
+});
+
+function onInp(){const u=uname();$('cc').textContent=u?u.length+'/30':'';clr();showErr('');upDot();}
+function onTi(){preset=null;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));clr();}
+function upDot(){
+  const u=uname();if(!u||u.length<2){$('dc').textContent='';return;}
+  const base=u.replace(/\./g,''),tot=Math.pow(2,base.length-1)-1;
+  $('dc').textContent=`سيُولّد ${tot>50?'٥٠ من أصل '+tot.toLocaleString('ar-EG'):Math.min(tot,50)} تنويعاً`;
 }
 
-/* ── عدّادات ──────────────────────────────────────── */
-function onInput()    { clearResults(); showError(''); updateDotCount(); }
-function onTagInput() { activePreset = null; document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); clearResults(); }
-
-function updateDotCount() {
-  const u = getUsername();
-  if (!u || u.length < 2) { $('dot-count').textContent = ''; return; }
-  const total = Math.pow(2, u.length - 1) - 1;
-  const shown = Math.min(total, 50);
-  $('dot-count').textContent = `سيتم توليد ${total > 50 ? '٥٠+ من ' + total.toLocaleString('ar') : shown} تنويعاً`;
+/* USERNAME */
+function uname(){return $('inp').value.trim().toLowerCase().replace(/@.*$/,'').replace(/\s+/g,'');}
+function validate(u){
+  if(!u)return'أدخل اسم المستخدم في Gmail';
+  if(u.length<2)return'يجب أن يتكون من حرفين على الأقل';
+  if(u.length>30)return'لا يتجاوز ٣٠ حرفاً';
+  if(/^\.|\.$|\.\./.test(u))return'لا تبدأ أو تنتهي بنقطة، ولا نقطتين متتاليتين';
+  if(!/^[a-z0-9.]+$/.test(u))return'استخدم الحروف الإنجليزية والأرقام والنقاط فقط';
+  return'';
 }
+function showErr(m){const e=$('err');if(m){e.textContent='⚠ '+m;e.style.display='block';}else e.style.display='none';}
 
-/* ── اسم المستخدم ────────────────────────────────── */
-function getUsername() {
-  return $('inp').value.trim().toLowerCase()
-    .replace(/@gmail\.com$/i, '').replace(/\s+/g, '');
-}
-
-/* ── التحقق من الصحة ─────────────────────────────── */
-function validateUsername(u) {
-  if (!u)          return 'أدخل اسم المستخدم في Gmail';
-  if (u.length < 2) return 'يجب أن يتكون الاسم من حرفين على الأقل';
-  if (u.length > 30) return 'اسم المستخدم في Gmail لا يتجاوز ٣٠ حرفاً';
-  if (!/^[a-z0-9]+([.][a-z0-9]+)*$/.test(u))
-    return 'استخدم الحروف الإنجليزية والأرقام والنقاط فقط (بدون نقاط متتالية أو في البداية/النهاية)';
-  return '';
-}
-
-function showError(msg) {
-  const el = $('inp-err');
-  if (msg) { el.textContent = '⚠ ' + msg; el.style.display = 'block'; }
-  else      { el.style.display = 'none'; }
-}
-
-/* ── خوارزمية تنويعات النقطة ──────────────────────── */
-function dotVariations(username) {
-  const chars = username.split('');
-  const n = chars.length - 1;
-  const out = [];
-  const limit = Math.pow(2, n);
-  for (let i = 1; i < limit && out.length < 50; i++) {
-    let r = chars[0];
-    for (let j = 0; j < n; j++) {
-      if (i & (1 << j)) r += '.';
-      r += chars[j + 1];
-    }
-    out.push(r + '@gmail.com');
-  }
+/* DOT ALGO */
+function dotVars(u,d){
+  const base=u.replace(/\./g,''),ch=base.split(''),n=ch.length-1,out=[],lim=Math.pow(2,n);
+  for(let i=1;i<lim&&out.length<50;i++){let r=ch[0];for(let j=0;j<n;j++){if(i&(1<<j))r+='.';r+=ch[j+1];}out.push(r+d);}
   return out;
 }
 
-/* ── التوليد ─────────────────────────────────────── */
-function generate() {
-  const u = getUsername();
-  const err = validateUsername(u);
-  if (err) { showError(err); return; }
-  showError('');
-
-  let list = [];
-
-  if (mode === 'plus') {
-    const tags = [];
-    if (activePreset) {
-      tags.push(activePreset);
-    } else {
-      const custom = $('tag-inp').value.trim();
-      if (custom) {
-        custom.split(/[\s,،;]+/).forEach(t => {
-          const clean = t.toLowerCase().replace(/[^a-z0-9._-]/g, '').slice(0, 64);
-          if (clean) tags.push(clean);
-        });
-      }
-    }
-    if (!tags.length) {
-      PRESETS.forEach(p => list.push(u + '+' + p.tag + '@gmail.com'));
-    } else {
-      tags.forEach(t => list.push(u + '+' + t + '@gmail.com'));
-    }
-  } else {
-    if (u.length < 2) { showError('يجب أن يتكون الاسم من حرفين على الأقل لتنويعات النقطة'); return; }
-    list = dotVariations(u);
-  }
-
-  allResults = list;
-  renderResults(list, u);
+/* GENERATE */
+function gen(){
+  const u=uname(),er=validate(u);
+  if(er){showErr(er);return;}
+  showErr('');setLoad(true);
+  setTimeout(()=>{
+    let list=[];
+    if(mode==='plus'){
+      const tags=[];
+      if(preset){tags.push(preset);}
+      else{const cv=$('ti').value.trim();if(cv)cv.split(/[\s,،;]+/).forEach(t=>{const c=t.toLowerCase().replace(/[^a-z0-9._-]/g,'').slice(0,64);if(c)tags.push(c);});}
+      if(!tags.length)PRESETS.forEach(p=>list.push(u+'+'+p.t+dom));
+      else tags.forEach(t=>list.push(u+'+'+t+dom));
+    } else if(mode==='dot'){
+      if(u.replace(/\./g,'').length<2){setLoad(false);showErr('يجب أن يحتوي الاسم على حرفين على الأقل');return;}
+      list=dotVars(u,dom);
+    } else {setLoad(false);return;}
+    all=list;sel.clear();rRes(list,u);saveH(u);bump('g',list.length);setLoad(false);
+  },280);
 }
 
-/* ── عرض النتائج ─────────────────────────────────── */
-function renderResults(list, u) {
-  const container = $('res-list');
-  container.innerHTML = '';
+function setLoad(on){
+  $('gb').disabled=on;
+  $('gt').textContent=on?'جاري التوليد…':'توليد عناوين Gmail';
+  const gi=$('gi');
+  if(on){const sp=document.createElement('div');sp.id='sp';sp.className='spin-a';sp.style.cssText='width:16px;height:16px;border:2px solid rgba(255,255,255,.15);border-top-color:var(--acc);border-radius:50%;flex-shrink:0;';gi.replaceWith(sp);}
+  else{const sp=document.getElementById('sp');if(sp){const ni=document.createElement('span');ni.id='gi';ni.textContent='←';sp.replaceWith(ni);}}
+}
 
-  const total = mode === 'dot' ? Math.pow(2, u.length - 1) - 1 : list.length;
+/* RENDER */
+function rRes(list,u){
+  const c=$('rl2');c.innerHTML='';sel.clear();
+  const bl=(u||'').replace(/\./g,'').length,totDot=mode==='dot'?Math.pow(2,bl-1)-1:0;
+  $('rl').textContent=list.length+' عنوان تم توليده';
+  updSel();$('rc').style.display='block';$('rph').style.display='none';$('si').value='';
+  list.forEach((e,i)=>c.appendChild(mkRow(e,i)));
+  const nd=$('dn');
+  if(mode==='dot'&&totDot>50){nd.textContent='عرض ٥٠ من أصل '+totDot.toLocaleString('ar-EG')+' تنويع ممكن';nd.style.display='block';}
+  else nd.style.display='none';
+  showMobBar(true);
+}
 
-  $('res-label').textContent = list.length + ' عنوان تم توليده';
-  $('results').style.display = 'block';
+function mkRow(email,i){
+  const row=document.createElement('div');
+  row.className='rrow fadein';row.style.animationDelay=Math.min(i*.025,.38)+'s';row.dataset.e=email;
 
-  list.forEach((email, i) => {
-    const row = document.createElement('div');
-    row.className = 'rrow fadein';
-    row.style.animationDelay = Math.min(i * 0.03, 0.4) + 's';
-    row.innerHTML = `
-      <div style="display:flex;gap:6px;flex-shrink:0;">
-        <button class="cbtn" onclick="copyOne(this,'${email}')">نسخ</button>
-        <button class="cbtn" onclick="copyOne(this,'to:(${email})')">فلتر</button>
-      </div>
-      <span dir="ltr" style="font-family:'Courier New',monospace;font-size:12.5px;color:rgba(255,255,255,0.82);word-break:break-all;flex:1;text-align:left;">${email}</span>
-    `;
-    container.appendChild(row);
+  const cb=document.createElement('div');cb.className='cb';cb.onclick=()=>togSel(email,cb,row);
+  const sp=document.createElement('span');
+  sp.dir='ltr';sp.style.cssText='font-family:"Courier New",monospace;font-size:12.5px;color:rgba(255,255,255,.8);word-break:break-all;flex:1;text-align:left;min-width:0;';
+  sp.textContent=email;
+
+  const bd=document.createElement('div');bd.style.cssText='display:flex;gap:4px;flex-shrink:0;';
+  const cp=document.createElement('button');cp.className='cbtn';cp.textContent='نسخ';cp.onclick=()=>cpOne(cp,email);
+  const fl=document.createElement('button');fl.className='cbtn';fl.textContent='فلتر';fl.onclick=()=>cpOne(fl,'to:('+email+')');
+  const qr=document.createElement('button');qr.className='cbtn';qr.style.padding='4px 8px';
+  qr.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3m0 4h4m-4-4v4"/></svg>';
+  qr.onclick=()=>showQR(email);
+  bd.append(cp,fl,qr);row.append(cb,sp,bd);
+
+  let tx=0;
+  row.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+  row.addEventListener('touchend',e=>{if(tx-e.changedTouches[0].clientX>65)cpOne(cp,email);},{passive:true});
+  return row;
+}
+
+/* SELECTION */
+function togSel(e,cb,row){sel.has(e)?sel.delete(e):sel.add(e);cb.classList.toggle('on',sel.has(e));row.classList.toggle('sel',sel.has(e));updSel();}
+function selAll(){
+  const vis=[...document.querySelectorAll('.rrow')].filter(r=>r.style.display!=='none').map(r=>r.dataset.e);
+  const allOn=vis.every(e=>sel.has(e));
+  vis.forEach(e=>allOn?sel.delete(e):sel.add(e));
+  document.querySelectorAll('.rrow').forEach(row=>{if(row.style.display==='none')return;const e=row.dataset.e;row.querySelector('.cb').classList.toggle('on',sel.has(e));row.classList.toggle('sel',sel.has(e));});
+  updSel();
+}
+function updSel(){const sl=$('sl'),csb=$('csb');if(sel.size>0){sl.textContent=sel.size+' محدد';sl.style.display='block';csb.style.display='inline-flex';}else{sl.style.display='none';csb.style.display='none';}}
+
+/* SEARCH */
+function filt(){const q=$('si').value.trim().toLowerCase();document.querySelectorAll('.rrow').forEach(r=>{r.style.display=(!q||r.dataset.e.includes(q))?'flex':'none';});}
+
+function clr(){all=[];sel.clear();$('rc').style.display='none';$('rph').style.display='block';$('rl2').innerHTML='';showMobBar(false);}
+
+/* MOBILE BAR */
+function showMobBar(on){if(window.innerWidth<768)$('mob-bar').style.display=on?'flex':'none';}
+
+/* COPY */
+function cpOne(btn,txt){
+  navigator.clipboard.writeText(txt).then(()=>{
+    const was=btn.innerHTML;btn.textContent='✓';btn.classList.add('ok');bump('c');
+    setTimeout(()=>{btn.innerHTML=was;btn.classList.remove('ok');},1800);
+  }).catch(()=>toast('تعذّر النسخ','err'));
+}
+function cpAll(){if(!all.length)return;navigator.clipboard.writeText(all.join('\n')).then(()=>{toast('تم نسخ جميع العناوين ('+all.length+') ✓');bump('c',all.length);});}
+function copySel(){if(!sel.size)return;navigator.clipboard.writeText([...sel].join('\n')).then(()=>{toast('تم نسخ '+sel.size+' عنوان ✓');bump('c',sel.size);});}
+
+/* EXPORT */
+function dl(content,name,mime){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:mime}));a.download=name;a.click();URL.revokeObjectURL(a.href);}
+function exTXT(){if(!all.length)return;dl(all.join('\n'),'715-aliases.txt','text/plain');toast('تم تحميل TXT ✓');}
+function exCSV(){if(!all.length)return;const u=uname();dl('﻿'+'العنوان البديل,الاسم الأصلي\n'+all.map(e=>e+','+u).join('\n'),'715-aliases.csv','text/csv');toast('تم تحميل CSV ✓');}
+async function shareR(){
+  if(!all.length)return;
+  const txt='عناوين Gmail البديلة:\n'+all.slice(0,10).join('\n')+(all.length>10?'\n…والمزيد':'');
+  if(navigator.share){try{await navigator.share({title:'715 ميل',text:txt});}catch(e){}}
+  else{navigator.clipboard.writeText(txt).then(()=>toast('تم نسخ القائمة للمشاركة ✓'));}
+}
+
+/* QR */
+function showQR(email){$('qe').textContent=email;$('qc').innerHTML='';$('qm').style.display='flex';new QRCode($('qc'),{text:'mailto:'+email,width:156,height:156,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M});}
+function closeQR(e){if(e&&e.target!==e.currentTarget)return;$('qm').style.display='none';$('qc').innerHTML='';}
+
+/* HISTORY */
+function getH(){try{return JSON.parse(localStorage.getItem('715h')||'[]');}catch{return[];}}
+function saveH(u){let h=getH().filter(x=>x!==u);h.unshift(u);h=h.slice(0,8);localStorage.setItem('715h',JSON.stringify(h));}
+function rHist(){
+  const h=getH(),list=$('hl'),emp=$('he');
+  list.innerHTML='';
+  if(!h.length){list.style.display='none';emp.style.display='block';return;}
+  list.style.display='flex';emp.style.display='none';
+  h.forEach(u=>{
+    const el=document.createElement('div');el.className='hitem fadein';
+    el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="2" style="opacity:.6"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span dir="ltr" style="font-family:'Courier New',monospace;font-size:13px;color:rgba(255,255,255,.65);">${u}${dom}</span></div><button class="cbtn" onclick="ldH('${u}')">استخدام</button>`;
+    list.appendChild(el);
   });
-
-  const note = $('dot-note');
-  if (mode === 'dot' && total > 50) {
-    note.textContent = `عرض ٥٠ تنويعاً من أصل ${total.toLocaleString('ar')} تنويع ممكن`;
-    note.style.display = 'block';
-  } else {
-    note.style.display = 'none';
-  }
 }
+function ldH(u){$('inp').value=u;onInp();swTab('plus');gen();}
 
-function clearResults() {
-  allResults = [];
-  $('results').style.display = 'none';
-  $('res-list').innerHTML = '';
-}
-
-/* ── النسخ ───────────────────────────────────────── */
-function copyOne(btn, text) {
-  navigator.clipboard.writeText(text).then(() => {
-    const was = btn.textContent;
-    btn.textContent = '✓';
-    btn.classList.add('ok');
-    setTimeout(() => { btn.textContent = was; btn.classList.remove('ok'); }, 1800);
-  }).catch(() => toast('تعذّر النسخ — حدّث المتصفح'));
-}
-
-function copyAll() {
-  if (!allResults.length) return;
-  navigator.clipboard.writeText(allResults.join('\n')).then(() => {
-    toast('تم نسخ جميع العناوين ✓');
-  });
-}
+/* INIT */
+$('inp').focus();
 </script>
 </body>
 </html>
